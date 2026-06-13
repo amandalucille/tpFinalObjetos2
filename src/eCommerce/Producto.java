@@ -2,6 +2,7 @@ package eCommerce;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Producto {
 	
@@ -12,7 +13,7 @@ public class Producto {
 	private String categoria;
 	private Double precio;
 	private Double descuento; //este no es obligatorio!! Así que hay un constructor que lo contempla por si lo queres agregar. 
-	private List<Atributo> atributos;
+	private List<Atributo<?>> atributos;
 	
 	public Producto(String sku, String nombre, String descripcion, 
 					String marca, String categoria, Double precio) {
@@ -22,7 +23,8 @@ public class Producto {
 		this.marca = marca;
 		this.categoria = categoria;
 		this.precio = precio;
-		this.atributos = new ArrayList<Atributo>();
+		this.atributos = new ArrayList<Atributo<?>>();
+		this.descuento = 0.0;
 	}
 	
 	public Producto(String sku, String nombre, String descripcion, 
@@ -34,7 +36,7 @@ public class Producto {
 		this.categoria = categoria;
 		this.precio = precio;
 		this.descuento = descuento;
-		this.atributos = new ArrayList<Atributo>();
+		this.atributos = new ArrayList<Atributo<?>>();
 }
 		
 	public Double precioFinal() {
@@ -51,14 +53,15 @@ public class Producto {
 			   this.precio 		!= null;
 	}
 	
-	public void agregarAtributo(Atributo atributo) {
+	public void agregarAtributo(Atributo<?> atributo) {
 		//ver si hace falta agregar una validación antes de agregar un nuevo atributo
 		this.atributos.add(atributo);
 	}
 	
-//	public Atributo obtenerAtributo(String descripcion) {
-//		return this.atributos.stream().filter(a -> a.getDescripcion() == descripcion).findFirst();
-//	}
-//	
+	public <?> obtenerAtributo(String descripcion) {
+		return this.atributos.stream().filter(a-> a.getDescripcion() == descripcion) ;
+		
+	}
+	
 	
 }
