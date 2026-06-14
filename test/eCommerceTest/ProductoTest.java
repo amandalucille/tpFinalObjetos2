@@ -37,9 +37,9 @@ public class ProductoTest {
         Producto notebook = new Producto("SKU-999", "Notebook", "Computadora", "Dell", "Tech", 150000.0);
         
         
-        Atributo<Double> peso = new Atributo<>("Peso", 1.8);
-        Atributo<String> color = new Atributo<>("Color", "Gris");
-        Atributo<Boolean> esNuevo = new Atributo<>("Es Nuevo", true);
+        AtributoDouble peso = new AtributoDouble("Peso", 1.8);
+        AtributoString color = new AtributoString("Color", "Gris");
+        AtributoBoolean esNuevo = new AtributoBoolean("Es Nuevo", true);
         
         
         notebook.agregarAtributo(peso);
@@ -52,7 +52,7 @@ public class ProductoTest {
         assertTrue(esNuevo.getValor());
         
         assertEquals(1.8, notebook.obtenerAtributo("Peso"));
-        assertTrue(notebook.obtenerAtributo("Es Nuevo"));
+        assertTrue((Boolean) notebook.obtenerAtributo("Es Nuevo"));
         
     }
 }
