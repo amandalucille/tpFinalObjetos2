@@ -58,10 +58,10 @@ public class Producto {
 		this.atributos.add(atributo);
 	}
 	
-	public <?> obtenerAtributo(String descripcion) {
-		return this.atributos.stream().filter(a-> a.getDescripcion() == descripcion) ;
-		
-	}
-	
+//	public <?> obtenerAtributo(String descripcion) {
+//		return this.atributos.stream().filter(a-> a.getDescripcion() == descripcion) ;
+//		
+//	}
+//	
 	
 }
