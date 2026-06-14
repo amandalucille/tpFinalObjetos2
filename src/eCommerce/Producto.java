@@ -58,6 +58,7 @@ public class Producto {
 		this.atributos.add(atributo);
 	}
 	
+
 	public <T> obtenerAtributo(String descripcion) {
 		
 		return this.atributos.stream()
@@ -66,6 +67,5 @@ public class Producto {
 							 .orElseThrow(() -> new RuntimeException("El atributo '" + descripcion + "' no existe"))
 							 .getValor();	
 	}
-	
-	
+		
 }
