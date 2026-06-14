@@ -58,9 +58,13 @@ public class Producto {
 		this.atributos.add(atributo);
 	}
 	
-	public <?> obtenerAtributo(String descripcion) {
-		return this.atributos.stream().filter(a-> a.getDescripcion() == descripcion) ;
+	public <T> obtenerAtributo(String descripcion) {
 		
+		return this.atributos.stream()
+							 .filter(a -> a.getDescripcion().equals(descripcion))
+							 .findFirst()
+							 .orElseThrow(() -> new RuntimeException("El atributo '" + descripcion + "' no existe"))
+							 .getValor();	
 	}
 	
 	
