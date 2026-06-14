@@ -50,5 +50,9 @@ public class ProductoTest {
         assertEquals(1.8, peso.getValor());
         assertEquals("Gris", color.getValor());
         assertTrue(esNuevo.getValor());
+        
+        assertEquals(1.8, notebook.obtenerAtributo("Peso"));
+        assertTrue(notebook.obtenerAtributo("Es Nuevo"));
+        
     }
 }

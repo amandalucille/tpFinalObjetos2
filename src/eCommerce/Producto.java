@@ -58,14 +58,14 @@ public class Producto {
 		this.atributos.add(atributo);
 	}
 	
-
-	public <T> obtenerAtributo(String descripcion) {
-		
-		return this.atributos.stream()
-							 .filter(a -> a.getDescripcion().equals(descripcion))
-							 .findFirst()
-							 .orElseThrow(() -> new RuntimeException("El atributo '" + descripcion + "' no existe"))
-							 .getValor();	
+	
+	@SuppressWarnings("unchecked")
+	public <T> T obtenerAtributo(String descripcion) {
+	
+		return (T) this.atributos.stream()
+							 	 .filter(atributo -> atributo.getDescripcion().equals(descripcion))
+							     .findFirst()
+							     .orElseThrow(() -> new RuntimeException("El atributo '" + descripcion + "' no existe"))
+							     .getValor();	
 	}
-		
 }
