@@ -8,16 +8,18 @@ public class Paquete implements ItemCatalogo{
 	private String descripcion;
 	private Double descuento;
 	private List<ItemCatalogo> items;
+	private int stock;
 	
-	public Paquete(String nombre, String descripcion, Double descuento) {
+	public Paquete(String nombre, String descripcion, Double descuento, int stock) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.descuento = descuento;
 		this.items = new ArrayList<>();
+		this.stock = stock;
 	}
 	
-	public Paquete(String nombre, String descripcion) {
-		this(nombre, descripcion, 0.0);
+	public Paquete(String nombre, String descripcion, int stock) {
+		this(nombre, descripcion, 0.0, stock);
 	}
 	
 	public String getNombre() {
@@ -44,6 +46,14 @@ public class Paquete implements ItemCatalogo{
 	
 	public void removeItem(ItemCatalogo item) {
 		this.items.remove(item);
+	}
+	
+	public void decrementarStock() {
+		
+		if (this.stock < 1) {
+		    throw new RuntimeException("Sin stock");
+		}
+		this.stock -= 1;
 	}
 	
 	

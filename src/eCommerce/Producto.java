@@ -13,10 +13,11 @@ public class Producto implements ItemCatalogo{
 	private Double precio;
 	private Double descuento; //este no es obligatorio!! Así que hay un constructor que lo contempla por si lo queres agregar. 
 	private List<Atributo<?>> atributos;
+	private int stock;
 	
 	
 	public Producto(String sku, String nombre, String descripcion,
-	            String marca, String categoria, Double precio, Double descuento) {
+	            String marca, String categoria, Double precio, Double descuento, int stock) {
 		this.sku = sku;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -25,12 +26,14 @@ public class Producto implements ItemCatalogo{
 		this.precio = precio;
 		this.descuento = descuento;
 		this.atributos = new ArrayList<>();
+		this.stock = stock;
 	}
 	
 	public Producto(String sku, String nombre, String descripcion,
-            String marca, String categoria, Double precio) {
-		this(sku, nombre, descripcion, marca, categoria, precio, 0.0);
+            String marca, String categoria, Double precio, int stock) {
+		this(sku, nombre, descripcion, marca, categoria, precio, 0.0, stock);
 	}
+	
 	
 	public Double getPrecioFinal() {
 		return this.getPrecioBase() * (1 - this.descuento / 100); 
@@ -74,5 +77,12 @@ public class Producto implements ItemCatalogo{
 		return precio;
 	}
 
+	public void decrementarStock() {
+		
+		if (this.stock < 1) {
+		    throw new RuntimeException("Sin stock");
+		}
+		this.stock -= 1;
+	}
 
 }

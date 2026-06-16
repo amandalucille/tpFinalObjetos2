@@ -1,0 +1,39 @@
+package eCommerce;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pedido {
+	
+	private Estado estado;
+	private List<ItemCatalogo> items;
+	private Catalogo catalogo;
+	
+	public Pedido() {
+		this.estado = new EstadoBorrador();
+		this.items = new ArrayList<ItemCatalogo>();
+	}
+	
+	public void addItem(ItemCatalogo item) {
+		this.items.add(item);
+	}
+	
+	public void removeItem(ItemCatalogo item) {
+		this.items.remove(item);
+	}
+	
+	public void confirmarPedido() {
+		this.estado.confirmar();
+	}
+	
+	public void cancelar() {
+		
+	}
+	
+	public void decrementarStock() {
+		catalogo.decrementarStock(items);
+	}
+	
+	
+
+}
