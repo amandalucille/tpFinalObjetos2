@@ -18,11 +18,12 @@ public class Atributo <T> {
 		return this.valor;
 	
 	}
-	public void setDescripcion(String nuevaDescripcion) {
-		this.descripcion = nuevaDescripcion;
-	}
-	public void setValor(T nuevoValor) {
-		this.valor = nuevoValor;
-	}
+//	public void setDescripcion(String nuevaDescripcion) {
+//		this.descripcion = nuevaDescripcion;
+//	}
+//	public void setValor(T nuevoValor) {
+//		this.valor = nuevoValor;
+//	}
+	
 }
 

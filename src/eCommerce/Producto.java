@@ -3,7 +3,7 @@ package eCommerce;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Producto {
+public class Producto implements ItemCatalogo{
 	
 	private String sku;
 	private String nombre;
@@ -14,20 +14,9 @@ public class Producto {
 	private Double descuento; //este no es obligatorio!! Así que hay un constructor que lo contempla por si lo queres agregar. 
 	private List<Atributo<?>> atributos;
 	
-	public Producto(String sku, String nombre, String descripcion, 
-					String marca, String categoria, Double precio) {
-		this.sku = sku;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.marca = marca;
-		this.categoria = categoria;
-		this.precio = precio;
-		this.atributos = new ArrayList<Atributo<?>>();
-		this.descuento = 0.0;
-	}
 	
-	public Producto(String sku, String nombre, String descripcion, 
-			String marca, String categoria, Double precio, Double descuento) {
+	public Producto(String sku, String nombre, String descripcion,
+	            String marca, String categoria, Double precio, Double descuento) {
 		this.sku = sku;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -35,13 +24,17 @@ public class Producto {
 		this.categoria = categoria;
 		this.precio = precio;
 		this.descuento = descuento;
-		this.atributos = new ArrayList<Atributo<?>>();
-}
-		
-	public Double precioFinal() {
-		return this.precio * (1 - this.descuento / 100); 
+		this.atributos = new ArrayList<>();
 	}
 	
+	public Producto(String sku, String nombre, String descripcion,
+            String marca, String categoria, Double precio) {
+		this(sku, nombre, descripcion, marca, categoria, precio, 0.0);
+	}
+	
+	public Double getPrecioFinal() {
+		return this.getPrecioBase() * (1 - this.descuento / 100); 
+	}
 	
 	public boolean esProductoValido() {
 		return this.sku    		!= null &&
@@ -50,6 +43,7 @@ public class Producto {
 			   this.marca 		!= null &&
 			   this.categoria 	!= null &&
 			   this.precio 		!= null;
+
 	}
 	
 	public void agregarAtributo(Atributo<?> atributo) {
@@ -67,4 +61,18 @@ public class Producto {
 							     .orElseThrow(() -> new RuntimeException("El atributo '" + descripcion + "' no existe"))
 							     .getValor();	
 	}
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public Double getPrecioBase() {
+		return precio;
+	}
+
+
 }
