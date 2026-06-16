@@ -34,38 +34,38 @@ public class ProductoTest {
 	
 	@BeforeEach
 	public void Setup() {
-		this.termo = new Producto("SKU-123", "Termo", "Termo acero", "Lumilagro", "Bazar", 1000.0);
-        this.mate = new Producto("SKU-456", "Mate", "Mate de madera", "Urquiza", "Bazar", 1000.0, 15.0);
-        this.sinSKU = new Producto(null, "Remera", "Remera de algodón", "Nike", "Ropa", 500.0);
-        this.sinNombre = new Producto("1", null, "Remera de algodón", "Nike", "Ropa", 500.0);
-    	this.sinDescripcion = new Producto("2", "Remera", null, "Nike", "Ropa", 500.0);
-    	this.sinMarca = new Producto("3", "Remera", "Remera de algodón", null, "Ropa", 500.0);
-    	this.sinPrecio = new Producto("4", "Remera", "Remera de algodón", "Nike", null, 500.0);
-    	this.sinCategoria = new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", null);
+		this.termo = new Producto("SKU-123", "Termo", "Termo acero", "Lumilagro", "Bazar", 1000.0, 0);
+        this.mate = new Producto("SKU-456", "Mate", "Mate de madera", "Urquiza", "Bazar", 1000.0, 15.0, 1);
+        this.sinSKU = new Producto(null, "Remera", "Remera de algodón", "Nike", "Ropa", 500.0, 2);
+        this.sinNombre = new Producto("1", null, "Remera de algodón", "Nike", "Ropa", 500.0, 3);
+    	this.sinDescripcion = new Producto("2", "Remera", null, "Nike", "Ropa", 500.0, 4);
+    	this.sinMarca = new Producto("3", "Remera", "Remera de algodón", null, "Ropa", 500.0, 5);
+    	this.sinPrecio = new Producto("4", "Remera", "Remera de algodón", "Nike", null, 500.0, 6);
+    	this.sinCategoria = new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", null, 7);
         
         
-        this.notebook = new Producto("SKU-999", "Notebook", "Computadora", "Dell", "Tech", 150000.0);
+        this.notebook = new Producto("SKU-999", "Notebook", "Computadora", "Dell", "Tech", 150000.0, 100);
         
         notebook.agregarAtributo(peso);
         notebook.agregarAtributo(color);
         notebook.agregarAtributo(esNuevo);
         notebook.agregarAtributo(pulgadas);
         
-        this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0);
-    	this.funda = new Producto("111", "Funda protectora", "Funda de silicona", "shein", "Accesorio", 1500.0);
-    	this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0);
-    	this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", 15.0);
+        this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0, 10);
+    	this.funda = new Producto("111", "Funda protectora", "Funda de silicona", "shein", "Accesorio", 1500.0, 9);
+    	this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 8);
+    	this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", 15.0, 7);
     	
     	packAudioMovil.addItem(auriculares);
     	packAudioMovil.addItem(funda);
     	packAudioMovil.addItem(cable);
     	
-    	this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0);
-    	this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0);
+    	this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 5);
+    	this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4);
         mouse.agregarAtributo(color);
     	
         
-    	this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de auto + mouse + teclado");
+    	this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de auto + mouse + teclado", 3);
     			
         paqueteHomeOffice.addItem(teclado);
         paqueteHomeOffice.addItem(mouse);
