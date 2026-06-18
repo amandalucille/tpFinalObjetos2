@@ -8,7 +8,7 @@ public class Atributo <T> {
 	public Atributo (String descripcion, T valor) {
 		this.descripcion = descripcion;
 		this.valor = valor;
-	
+
 	}
 	
 	public String getDescripcion() {

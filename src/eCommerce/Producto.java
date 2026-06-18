@@ -84,5 +84,9 @@ public class Producto implements ItemCatalogo{
 		}
 		this.stock -= 1;
 	}
+	
+	public void aumentarStock() {
+		this.stock += 1;
+	}
 
 }

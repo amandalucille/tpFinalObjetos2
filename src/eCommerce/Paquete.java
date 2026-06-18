@@ -48,12 +48,20 @@ public class Paquete implements ItemCatalogo{
 		this.items.remove(item);
 	}
 	
+	public boolean hayStock() {
+		return this.stock >= 1;
+	}
+	
 	public void decrementarStock() {
 		
-		if (this.stock < 1) {
+		if (!hayStock()) {
 		    throw new RuntimeException("Sin stock");
 		}
 		this.stock -= 1;
+	}
+	
+	public void aumentarStock() {
+		this.stock += 1;
 	}
 	
 	

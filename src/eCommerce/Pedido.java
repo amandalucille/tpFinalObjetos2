@@ -22,9 +22,9 @@ public class Pedido {
 		this.items.remove(item);
 	}
 	
-	public void confirmarPedido() {
-		this.estado.confirmar();
-	}
+//	public void confirmarPedido() {
+//		this.estado.confirmar();
+//	}
 	
 	public void cancelar() {
 		
@@ -34,6 +34,13 @@ public class Pedido {
 		catalogo.decrementarStock(items);
 	}
 	
+	public void devolverStock() {
+		catalogo.aumentarStock(items);
+	}
+	
+	public void setEstado(Estado nuevoEstado) {
+		this.estado = nuevoEstado;
+	}
 	
 
 }

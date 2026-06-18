@@ -10,6 +10,10 @@ public class Catalogo {
 	public void decrementarStock(List<ItemCatalogo> itemsPedido) {
 		itemsPedido.stream().forEach(item -> item.decrementarStock());
 	}
+	
+	public void aumentarStock(List<ItemCatalogo> itemsPedido) {
+		itemsPedido.stream().forEach(item -> item.aumentarStock());
+	}
 }
 
 
