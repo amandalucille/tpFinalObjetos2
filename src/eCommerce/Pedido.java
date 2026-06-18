@@ -29,6 +29,21 @@ public class Pedido {
 	public void confirmarPedido() {
 		this.estado.confirmar(this);
 	}
+	public void enPreparacion() {
+		this.estado.enPreparacion(this); 
+	}
+	
+	public void confirmarPedido() {
+		this.estado.confirmar(this);
+	}
+	
+	public void enviar() {
+		this.estado.enviar(this); 
+	}
+	
+	public void entregado() {
+		this.estado.entregado(this); 
+	}
 	
 	public void enviar() {
 		this.estado.enviar(this); 
@@ -39,7 +54,7 @@ public class Pedido {
 	}
 
 	public void cancelar() {
-		
+		this.estado.cancelar(this); 
 	}
 	
 	public void decrementarStock() {

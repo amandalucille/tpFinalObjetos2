@@ -30,7 +30,8 @@ public class ProductoTest {
 	Producto teclado;
 	Producto mouse;    
 	Paquete paqueteHomeOffice;
-			
+	Catalogo mercadoLibre;
+	Pedido pedido1; 
 	
 	@BeforeEach
 	public void Setup() {
@@ -71,6 +72,21 @@ public class ProductoTest {
         paqueteHomeOffice.addItem(mouse);
         paqueteHomeOffice.addItem(packAudioMovil);
     	
+        this.mercadoLibre = new Catalogo();
+        this.mercadoLibre.agregarItem(auriculares);
+        this.mercadoLibre.agregarItem(notebook);
+        this.mercadoLibre.agregarItem(funda);
+        this.mercadoLibre.agregarItem(termo);
+        this.mercadoLibre.agregarItem(mate);
+        this.mercadoLibre.agregarItem(mouse);
+        this.mercadoLibre.agregarItem(cable);
+        this.mercadoLibre.agregarItem(packAudioMovil);
+        this.mercadoLibre.agregarItem(teclado);
+        this.mercadoLibre.agregarItem(paqueteHomeOffice);
+        
+        this.pedido1 = new Pedido();
+        this.pedido1.addItem(mouse);
+        
 	}
 
     @Test
