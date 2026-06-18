@@ -14,6 +14,12 @@ public class Catalogo {
 	public void aumentarStock(List<ItemCatalogo> itemsPedido) {
 		itemsPedido.stream().forEach(item -> item.aumentarStock());
 	}
+
+	
+	public void agregarItem(ItemCatalogo item) {
+		this.itemsDelCatalogo.add(item);
+	}
+	
 }
 
 

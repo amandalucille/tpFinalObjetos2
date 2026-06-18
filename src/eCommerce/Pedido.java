@@ -21,11 +21,24 @@ public class Pedido {
 	public void removeItem(ItemCatalogo item) {
 		this.items.remove(item);
 	}
+
+	public void enPreparacion() {
+		this.estado.enPreparacion(this); 
+	}
 	
-//	public void confirmarPedido() {
-//		this.estado.confirmar();
-//	}
+	public void confirmarPedido() {
+		this.estado.confirmar(this);
+	}
 	
+	public void enviar() {
+		this.estado.enviar(this); 
+	}
+	
+	public void entregado() {
+		this.estado.entregado(this); 
+	}
+
+>>>>>>> 9732f7a (Desarrollamos superclase Estado y sus subclases con los métodos que sobreescribe. Modificaciones en clases Producto, Paquete e interfazItemCatalogo para incorporar los estados.)
 	public void cancelar() {
 		
 	}
