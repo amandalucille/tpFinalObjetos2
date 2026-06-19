@@ -8,14 +8,16 @@ public class Paquete implements ItemCatalogo{
 	private String descripcion;
 	private Double descuento;
 	private List<ItemCatalogo> items;
-	private int stock;
+	private Integer stock;
 	
-	public Paquete(String nombre, String descripcion, Double descuento, int stock) {
+	public Paquete(String nombre, String descripcion, Double descuento, Integer stock) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.descuento = descuento;
 		this.items = new ArrayList<>();
 		this.stock = stock;
+		
+		this.validarItem();
 	}
 	
 	public Paquete(String nombre, String descripcion, int stock) {
@@ -41,6 +43,7 @@ public class Paquete implements ItemCatalogo{
 	}
 	
 	public void addItem(ItemCatalogo item) {
+		item.decrementarStock();
 		this.items.add(item);
 	}
 	
@@ -48,7 +51,7 @@ public class Paquete implements ItemCatalogo{
 		this.items.remove(item);
 	}
 	
-	public boolean hayStock() {
+	public Boolean hayStock() {
 		return this.stock >= 1;
 	}
 	
@@ -64,5 +67,20 @@ public class Paquete implements ItemCatalogo{
 		this.stock += 1;
 	}
 	
-	
+	public Double getPeso() {
+		return items.stream()
+					.mapToDouble(item -> item.getPeso())
+					.sum();
+	}
+	public void validarItem() {
+		if (!esItemValido()) {
+			throw new RuntimeException("No es un Paquete válido");
+		}
+		
+	}
+	public Boolean esItemValido() {
+		return (this.nombre 	 != null && !this.nombre.isBlank()) 	 &&
+			   (this.descripcion != null && !this.descripcion.isBlank()) &&
+			   (this.stock       != null && this.stock >= 0);
+	}
 }

@@ -13,11 +13,12 @@ public class Producto implements ItemCatalogo{
 	private Double precio;
 	private Double descuento; //este no es obligatorio!! Así que hay un constructor que lo contempla por si lo queres agregar. 
 	private List<Atributo<?>> atributos;
-	private int stock;
+	private Integer stock;
+	private Double peso;
 	
 	
 	public Producto(String sku, String nombre, String descripcion,
-	            String marca, String categoria, Double precio, Double descuento, int stock) {
+	            String marca, String categoria, Double precio, Double descuento, int stock, Double peso) {
 		this.sku = sku;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -27,11 +28,14 @@ public class Producto implements ItemCatalogo{
 		this.descuento = descuento;
 		this.atributos = new ArrayList<>();
 		this.stock = stock;
+		this.peso = peso;
+		
+		this.validarItem(); 
 	}
 	
 	public Producto(String sku, String nombre, String descripcion,
-            String marca, String categoria, Double precio, int stock) {
-		this(sku, nombre, descripcion, marca, categoria, precio, 0.0, stock);
+            String marca, String categoria, Double precio, Integer stock, Double peso) {
+		this(sku, nombre, descripcion, marca, categoria, precio, 0.0, stock,peso);
 	}
 	
 	
@@ -39,13 +43,20 @@ public class Producto implements ItemCatalogo{
 		return this.getPrecioBase() * (1 - this.descuento / 100); 
 	}
 	
-	public boolean esProductoValido() {
-		return this.sku    		!= null &&
-			   this.nombre 		!= null &&
-			   this.descripcion != null && 
-			   this.marca 		!= null &&
-			   this.categoria 	!= null &&
-			   this.precio 		!= null;
+	public void validarItem() {
+		if (!esItemValido()) {
+			throw new RuntimeException("No es un producto válido");
+		}
+	}
+	
+	public Boolean esItemValido() {
+		return (this.sku    	 != null && !this.sku.isBlank()) 		 &&   
+			   (this.nombre 	 != null && !this.nombre.isBlank())  	 && 
+			   (this.descripcion != null && !this.descripcion.isBlank()) && 
+			   (this.marca 		 != null && !this.marca.isBlank()) 		 &&
+			   (this.categoria 	 != null && !this.categoria.isBlank())	 &&
+			   (this.precio 	 != null && this.precio > 0)             &&
+			   (this.stock       != null && this.stock >= 0);
 
 	}
 	
@@ -76,10 +87,14 @@ public class Producto implements ItemCatalogo{
 	public Double getPrecioBase() {
 		return precio;
 	}
-
+	
+	public Boolean hayStock() {
+		return this.stock >= 1;
+	}
+	
 	public void decrementarStock() {
 		
-		if (this.stock < 1) {
+		if (!hayStock()) {
 		    throw new RuntimeException("Sin stock");
 		}
 		this.stock -= 1;
@@ -87,6 +102,14 @@ public class Producto implements ItemCatalogo{
 	
 	public void aumentarStock() {
 		this.stock += 1;
+	}
+
+	public Double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Double peso) {
+		this.peso = peso;
 	}
 
 }

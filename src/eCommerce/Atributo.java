@@ -1,6 +1,6 @@
 package eCommerce;
 
-public class Atributo <T> {
+public abstract class Atributo <T> {
 	
 	private String descripcion;
 	private T valor;
@@ -17,6 +17,11 @@ public class Atributo <T> {
 	public T getValor() {
 		return this.valor;
 	
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return this.descripcion == obj;
 	}
 //	public void setDescripcion(String nuevaDescripcion) {
 //		this.descripcion = nuevaDescripcion;
