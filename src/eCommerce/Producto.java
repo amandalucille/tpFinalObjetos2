@@ -1,7 +1,7 @@
 package eCommerce;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Producto implements ItemCatalogo{
 	
@@ -12,13 +12,13 @@ public class Producto implements ItemCatalogo{
 	private String categoria;
 	private Double precio;
 	private Double descuento; //este no es obligatorio!! Así que hay un constructor que lo contempla por si lo queres agregar. 
-	private List<Atributo<?>> atributos;
+	private Set<Atributo<?>> atributos;
 	private Integer stock;
 	private Double peso;
 	
 	
 	public Producto(String sku, String nombre, String descripcion,
-	            String marca, String categoria, Double precio, Double descuento, int stock, Double peso) {
+	            String marca, String categoria, Double precio, Double descuento, Integer stock, Double peso) {
 		this.sku = sku;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -26,7 +26,7 @@ public class Producto implements ItemCatalogo{
 		this.categoria = categoria;
 		this.precio = precio;
 		this.descuento = descuento;
-		this.atributos = new ArrayList<>();
+		this.atributos = new HashSet<>();
 		this.stock = stock;
 		this.peso = peso;
 		
@@ -56,7 +56,9 @@ public class Producto implements ItemCatalogo{
 			   (this.marca 		 != null && !this.marca.isBlank()) 		 &&
 			   (this.categoria 	 != null && !this.categoria.isBlank())	 &&
 			   (this.precio 	 != null && this.precio > 0)             &&
-			   (this.stock       != null && this.stock >= 0);
+			   (this.stock       != null && this.stock >= 0)			 &&
+			   (this.peso 		 != null && this.peso > 0);
+		
 
 	}
 	

@@ -1,5 +1,7 @@
 package eCommerce;
 
+import java.util.Objects;
+
 public abstract class Atributo <T> {
 	
 	private String descripcion;
@@ -19,10 +21,26 @@ public abstract class Atributo <T> {
 	
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		return this.descripcion == obj;
-	}
+    public boolean equals(Object obj) {
+        if (this == obj){ 
+        	return true;
+        }
+        if (!(obj instanceof Atributo)){ 
+        	return false;
+        }	
+
+        Atributo<T> otro = (Atributo<T> ) obj;
+        return Objects.equals(this.descripcion, otro.getDescripcion());
+    }
+	 
+	@Override
+	public int hashCode() {
+		return Objects.hash(descripcion); // mismo criterio que equals
+	    }
+
+
 //	public void setDescripcion(String nuevaDescripcion) {
 //		this.descripcion = nuevaDescripcion;
 //	}
