@@ -3,77 +3,13 @@ package eCommerceTest;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import eCommerce.*;
 
-public class ProductoTest {
-	Producto termo;
-	Producto mate;
+public class ItemTest  extends setUp{
 	
-	Producto notebook;
-	AtributoDouble peso = new AtributoDouble("Peso", 1.8);
-    AtributoString color = new AtributoString("Color", "Gris");
-    AtributoBoolean esNuevo = new AtributoBoolean("Es Nuevo", true);
-    AtributoInt pulgadas = new AtributoInt("Pulgadas", 16);
-    Producto auriculares;
-	Producto funda;
-	Producto cable;
-	Paquete packAudioMovil;
-	Producto teclado;
-	Producto mouse;    
-	Paquete paqueteHomeOffice;
-	Catalogo mercadoLibre;
-	Pedido pedido1; 
-	
-	@BeforeEach
-	public void Setup() {
-		this.termo = new Producto("SKU-123", "Termo", "Termo acero", "Lumilagro", "Bazar", 1000.0, 0,3.0);
-        this.mate = new Producto("SKU-456", "Mate", "Mate de madera", "Urquiza", "Bazar", 1000.0, 15.0, 1,4.5);
-        this.notebook = new Producto("SKU-999", "Notebook", "Computadora", "Dell", "Tech", 150000.0, 100,2.0);
-        
-        notebook.agregarAtributo(peso);
-        notebook.agregarAtributo(color);
-        notebook.agregarAtributo(esNuevo);
-        notebook.agregarAtributo(pulgadas);
-        
-        this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0, 10,2.2);
-    	this.funda = new Producto("111", "Funda protectora", "Funda de silicona", "shein", "Accesorio", 1500.0, 9,5.4);
-    	this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 8,5.4);
-    	this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", 15.0, 7);
-    	
-    	packAudioMovil.addItem(auriculares);
-    	packAudioMovil.addItem(funda);
-    	packAudioMovil.addItem(cable);
-    	
-    	this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 5,4.4);
-    	this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4,6.6);
-        mouse.agregarAtributo(color);
-    	
-        
-    	this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de auto + mouse + teclado", 3);
-    			
-        paqueteHomeOffice.addItem(teclado);
-        paqueteHomeOffice.addItem(mouse);
-        paqueteHomeOffice.addItem(packAudioMovil);
-    	
-        this.mercadoLibre = new Catalogo();
-        this.mercadoLibre.agregarItem(auriculares);
-        this.mercadoLibre.agregarItem(notebook);
-        this.mercadoLibre.agregarItem(funda);
-        this.mercadoLibre.agregarItem(termo);
-        this.mercadoLibre.agregarItem(mate);
-        this.mercadoLibre.agregarItem(mouse);
-        this.mercadoLibre.agregarItem(cable);
-        this.mercadoLibre.agregarItem(packAudioMovil);
-        this.mercadoLibre.agregarItem(teclado);
-        this.mercadoLibre.agregarItem(paqueteHomeOffice);
-        
-        this.pedido1 = new Pedido();
-        this.pedido1.addItem(mouse);
-        
-	}
 
     @Test
     public void testPrecioFinalSinDescuento() {
@@ -115,6 +51,9 @@ public class ProductoTest {
         RuntimeException exSinCategoria= assertThrows(RuntimeException.class, () -> new Producto("4", "Remera", "Remera de algodón", "Nike", null, 500.0, 6,12.4));
         assertEquals("No es un producto válido", exSinCategoria.getMessage());
         
+        RuntimeException exCategoriaIsBlank = assertThrows(RuntimeException.class, () -> new Producto("4", "Remera", "Remera de algodón", "Nike", "  ", 500.0, 6, 12.4));
+        assertEquals("No es un producto válido", exCategoriaIsBlank.getMessage());
+        
         RuntimeException exPrecioNegativo = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", -10.0, 7,5.76));
         assertEquals("No es un producto válido", exPrecioNegativo.getMessage());
         
@@ -136,20 +75,6 @@ public class ProductoTest {
     }
 
     @Test
-    public void testAtributosDinamicosDeDiferentesTipos() {
-        assertEquals(1.8, peso.getValor());
-        assertEquals("Gris", color.getValor());
-        assertTrue(esNuevo.getValor());
-        
-        assertEquals(1.8, notebook.obtenerAtributo("Peso"));
-        assertTrue((Boolean) notebook.obtenerAtributo("Es Nuevo"));
-        
-        
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> notebook.obtenerAtributo("Alto"));
-        assertEquals("El atributo 'Alto' no existe", ex.getMessage());
-    }
-    
-    @Test
     public void testDePaqueteDeProductos() {
     	
     	assertEquals(8755.0, packAudioMovil.getPrecioFinal() );
@@ -159,7 +84,6 @@ public class ProductoTest {
     	assertEquals(2300.0, packAudioMovil.getPrecioBase() );
     	
     	packAudioMovil.addItem(auriculares);
-    	
     		
         
         assertEquals(11555.0, paqueteHomeOffice.getPrecioBase() );
@@ -175,9 +99,79 @@ public class ProductoTest {
     	
     	assertEquals("Pack Audio Móvil", packAudioMovil.getNombre());
     	assertEquals("Paquete de accesorios", packAudioMovil.getDescripcion());  
-    	
+	
+    }
+    
+    @Test
+    public void testValidezDePaquete() {
+
+        RuntimeException exSinNombre = assertThrows(RuntimeException.class, () -> new Paquete(null,"Paquete pruebas", 9));
+        assertEquals("No es un Paquete válido", exSinNombre.getMessage());
+        
+        RuntimeException exNombreIsBlank = assertThrows(RuntimeException.class, () -> new Paquete("","Paquete pruebas", 9));
+        assertEquals("No es un Paquete válido", exNombreIsBlank.getMessage());
+        
+        RuntimeException exSinDescripcion = assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas", null, 9));
+        assertEquals("No es un Paquete válido", exSinDescripcion.getMessage());
+        
+        RuntimeException exDescripcionIsBlank = assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas","", 9));
+        assertEquals("No es un Paquete válido", exDescripcionIsBlank.getMessage());
+        
+        RuntimeException exSinStock= assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas", "Paquete prueba", null));
+        assertEquals("No es un Paquete válido", exSinStock.getMessage());
+        
+        RuntimeException exStockNegativo = assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas", "Paquete prueba", -5));
+        assertEquals("No es un Paquete válido", exStockNegativo.getMessage());
+        
+    }
+
+    @Test
+    public void testDecrementarStockInvalido() {
+    	RuntimeException exSinStockProducto = assertThrows(RuntimeException.class, () -> productoSinStock.decrementarStock());
+        assertEquals("Sin stock", exSinStockProducto.getMessage());
+        
+        RuntimeException exSinStockPaquete = assertThrows(RuntimeException.class, () -> paqueteSinStock.decrementarStock());
+        assertEquals("Sin stock", exSinStockPaquete.getMessage());
+        
+    
+    }
+
+    @Test
+    public void testGetPeso() {
+    	assertEquals(3.0,termo.getPeso());
+    	assertEquals(13.0, packAudioMovil.getPeso());
     	
     }
     
+    @Test
+    public void testAumentarStock() {
+    	termo.aumentarStock();
+    	packAudioMovil.aumentarStock();
+    }
+    
+    @Test
+    public void testAtributosDinamicosRepetidos() {
+    	//invento dos atributos dinamicos iguales
+    	AtributoBoolean tecladoEsp = new AtributoBoolean("Teclado Español", true);
+    	AtributoBoolean tecladoEsp2 = new AtributoBoolean("Teclado Español", true);
+    		
+    	//veo que efectivamente ninguno de los dos esta como atributo de la notebook
+    	assertFalse(notebook.getAtributos().contains(tecladoEsp)); 
+    	assertFalse(notebook.getAtributos().contains(tecladoEsp2));
+
+    	//agrego uno de los dos y veo que ahora me va a decir como si los 2 estuvieran xq el equals que nosotras hicimos, compara no soo por instancia, sino que tambien por nombre
+    	
+    	
+    	notebook.agregarAtributo(tecladoEsp);
+    	assertTrue(notebook.getAtributos().contains(tecladoEsp));
+    	assertTrue(notebook.getAtributos().contains(tecladoEsp2));
+
+    	
+    	
+    	
+    	
+        
+    	
+    }
     
 }

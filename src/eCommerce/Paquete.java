@@ -20,7 +20,7 @@ public class Paquete implements ItemCatalogo{
 		this.validarItem();
 	}
 	
-	public Paquete(String nombre, String descripcion, int stock) {
+	public Paquete(String nombre, String descripcion, Integer stock) {
 		this(nombre, descripcion, 0.0, stock);
 	}
 	

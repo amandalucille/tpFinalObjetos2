@@ -38,7 +38,7 @@ public abstract class Atributo <T> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(descripcion); // mismo criterio que equals
-	    }
+	}
 
 
 //	public void setDescripcion(String nuevaDescripcion) {

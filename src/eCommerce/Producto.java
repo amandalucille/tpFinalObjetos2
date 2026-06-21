@@ -59,12 +59,15 @@ public class Producto implements ItemCatalogo{
 			   (this.stock       != null && this.stock >= 0)			 &&
 			   (this.peso 		 != null && this.peso > 0);
 		
-
 	}
 	
 	public void agregarAtributo(Atributo<?> atributo) {
 		//ver si hace falta agregar una validación antes de agregar un nuevo atributo
 		this.atributos.add(atributo);
+	}
+	
+	public Set<Atributo<?>> getAtributos() {
+		return atributos;
 	}
 	
 	
@@ -108,10 +111,6 @@ public class Producto implements ItemCatalogo{
 
 	public Double getPeso() {
 		return peso;
-	}
-
-	public void setPeso(Double peso) {
-		this.peso = peso;
 	}
 
 }
