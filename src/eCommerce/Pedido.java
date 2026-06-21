@@ -38,7 +38,6 @@ public class Pedido {
 		this.estado.entregado(this); 
 	}
 
->>>>>>> 9732f7a (Desarrollamos superclase Estado y sus subclases con los métodos que sobreescribe. Modificaciones en clases Producto, Paquete e interfazItemCatalogo para incorporar los estados.)
 	public void cancelar() {
 		
 	}
