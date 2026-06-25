@@ -1,4 +1,6 @@
-package eCommerce;
+package eCommerce.estados;
+
+import eCommerce.Pedido;
 
 public class EstadoBorrador extends Estado {
 	

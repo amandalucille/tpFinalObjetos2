@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import eCommerce.*;
+import eCommerce.item.*;
+
 
 public class ItemTest  extends setUp{
 	
@@ -38,6 +39,7 @@ public class ItemTest  extends setUp{
         
         RuntimeException exSinDescripcion= assertThrows(RuntimeException.class, () -> new Producto("2", "Remera", null, "Nike", "Ropa", 500.0, 4,16.0));
         assertEquals("No es un producto válido", exSinDescripcion.getMessage());
+        
         
         RuntimeException exDescripcionIsBlank= assertThrows(RuntimeException.class, () -> new Producto("2", "Remera", "  ", "Nike", "Ropa", 500.0, 4,16.0));
         assertEquals("No es un producto válido", exDescripcionIsBlank.getMessage());
@@ -152,8 +154,8 @@ public class ItemTest  extends setUp{
     @Test
     public void testAtributosDinamicosRepetidos() {
     	//invento dos atributos dinamicos iguales
-    	AtributoBoolean tecladoEsp = new AtributoBoolean("Teclado Español", true);
-    	AtributoBoolean tecladoEsp2 = new AtributoBoolean("Teclado Español", true);
+    	Atributo<Boolean> tecladoEsp = new Atributo<Boolean>("Teclado Español", true);
+    	Atributo<Boolean> tecladoEsp2 = new Atributo<Boolean>("Teclado Español", true);
     		
     	//veo que efectivamente ninguno de los dos esta como atributo de la notebook
     	assertFalse(notebook.getAtributos().contains(tecladoEsp)); 
@@ -167,7 +169,8 @@ public class ItemTest  extends setUp{
     	assertTrue(notebook.getAtributos().contains(tecladoEsp2));
 
     	
-    	
+    	//Por mas que hayan dos instancias gemelas de un atributo, por como redefinimos el equals,
+    	//al ser identicas, si tengo una, tengo la otra también. 
     	
     	
         

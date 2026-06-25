@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import eCommerce.item.*;
+
 
 class AtributoTest extends setUp{
 	
@@ -27,6 +29,14 @@ class AtributoTest extends setUp{
 	public void testEqualsAtributo() { //
 		assertTrue(peso.equals(peso));
 		assertFalse(peso.equals(notebook));
+		
+    	Atributo<Boolean> tecladoEsp = new Atributo<Boolean>("Teclado Español", true);
+    	Atributo<Boolean> tecladoEsp2 = new Atributo<Boolean>("Teclado Español", true);
+    	
+    	assertEquals(tecladoEsp, tecladoEsp2);
+    	
+    	//Se prueban en este test los tres casos posibles de que dos atributos sean iguales
 	}
+
 
 }

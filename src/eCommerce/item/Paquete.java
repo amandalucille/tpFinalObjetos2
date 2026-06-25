@@ -1,20 +1,20 @@
-package eCommerce;
+package eCommerce.item;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Paquete implements ItemCatalogo{
 	private String nombre;
 	private String descripcion;
 	private Double descuento;
-	private List<ItemCatalogo> items;
+	private Map<ItemCatalogo, Integer> items;
 	private Integer stock;
 	
 	public Paquete(String nombre, String descripcion, Double descuento, Integer stock) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.descuento = descuento;
-		this.items = new ArrayList<>();
+		this.items = new HashMap<>();
 		this.stock = stock;
 		
 		this.validarItem();
@@ -33,43 +33,46 @@ public class Paquete implements ItemCatalogo{
 	}
 
 	public Double getPrecioBase() {
-		return this.items.stream()
-							 .mapToDouble(item -> item.getPrecioFinal()) // .mapToDouble(item -> item.getPrecioBase())
-							 .sum();
+		return this.items.entrySet()
+						 .stream()
+						 .mapToDouble(itemCant -> itemCant.getKey().getPrecioFinal() * itemCant.getValue()) 
+						 .sum();
 	}
 
 	public Double getPrecioFinal() {
 		return this.getPrecioBase() * (1 - this.descuento/100);
 	}
 	
-	public void addItem(ItemCatalogo item) {
-		item.decrementarStock();
-		this.items.add(item);
+	public void addItem(ItemCatalogo item, Integer cantidad) {
+		item.decrementarStock(cantidad);
+		this.items.put(item, cantidad);
 	}
+	
 	
 	public void removeItem(ItemCatalogo item) {
 		this.items.remove(item);
 	}
 	
-	public Boolean hayStock() {
-		return this.stock >= 1;
+	public Boolean hayStock(Integer cantidad) {
+		return this.stock >= cantidad;
 	}
 	
-	public void decrementarStock() {
+	public void decrementarStock(Integer cantidad) {
 		
-		if (!hayStock()) {
+		if (!hayStock(cantidad)) {
 		    throw new RuntimeException("Sin stock");
 		}
-		this.stock -= 1;
+		this.stock -= cantidad;
 	}
 	
-	public void aumentarStock() {
-		this.stock += 1;
+	public void aumentarStock(Integer cantidad) {
+		this.stock += cantidad;
 	}
 	
 	public Double getPeso() {
-		return items.stream()
-					.mapToDouble(item -> item.getPeso())
+		return items.entrySet()
+					.stream()
+					.mapToDouble(itemCant -> itemCant.getKey().getPeso() * itemCant.getValue())
 					.sum();
 	}
 	public void validarItem() {

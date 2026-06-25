@@ -3,6 +3,7 @@ package eCommerceTest;
 import org.junit.jupiter.api.BeforeEach;
 
 import eCommerce.*;
+import eCommerce.item.*;
 
 class setUp {
 
@@ -10,10 +11,10 @@ class setUp {
 	Producto mate;
 	
 	Producto notebook;
-	AtributoDouble peso = new AtributoDouble("Peso", 1.8);
-    AtributoString color = new AtributoString("Color", "Gris");
-    AtributoBoolean esNuevo = new AtributoBoolean("Es Nuevo", true);
-    AtributoInt pulgadas = new AtributoInt("Pulgadas", 16);
+	Atributo<Double> peso = new Atributo<Double>("Peso", 1.8);
+    Atributo<String> color = new Atributo<String>("Color", "Gris");
+    Atributo<Boolean> esNuevo = new Atributo<Boolean>("Es Nuevo", true);
+    Atributo<Integer> pulgadas = new Atributo<Integer>("Pulgadas", 16);
 
 	
     Producto auriculares;

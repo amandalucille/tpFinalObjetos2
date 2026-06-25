@@ -1,4 +1,4 @@
-package eCommerce;
+package eCommerce.estados;
 
 public class EstadoEntregado extends Estado {
 	//Trancisiones validas: NINGUNA 

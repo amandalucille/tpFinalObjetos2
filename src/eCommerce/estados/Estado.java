@@ -1,5 +1,6 @@
-package eCommerce;
+package eCommerce.estados;
 
+import eCommerce.Pedido;
 
 public abstract class Estado {
 

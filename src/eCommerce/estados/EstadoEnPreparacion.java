@@ -1,4 +1,6 @@
-package eCommerce;
+package eCommerce.estados;
+
+import eCommerce.Pedido;
 
 public class EstadoEnPreparacion extends Estado {
 	//Trancisiones validas: ENVIADO / CANCELADO
@@ -18,5 +20,6 @@ public class EstadoEnPreparacion extends Estado {
 		//pedido.devolverCostoEnvio();
 		pedido.setEstado(new EstadoCancelado());
 	}
+	
 	
 }

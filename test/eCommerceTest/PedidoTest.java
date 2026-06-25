@@ -5,6 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import eCommerce.*;
+import eCommerce.estados.EstadoCancelado;
+import eCommerce.estados.EstadoConfirmado;
+import eCommerce.estados.EstadoEnPreparacion;
+import eCommerce.estados.EstadoEntregado;
+import eCommerce.estados.EstadoEnviado;
 
 class PedidoTest  extends setUp{
 

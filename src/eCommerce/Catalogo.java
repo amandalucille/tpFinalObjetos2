@@ -1,11 +1,13 @@
 package eCommerce;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import eCommerce.item.ItemCatalogo;
 
 public class Catalogo {
 
-	private List<ItemCatalogo> itemsDelCatalogo = new ArrayList<>();
+	private Set<ItemCatalogo> itemsDelCatalogo = new HashSet<>();
 	
 //	//esto no sabemos si lo vamos a usar en el mopdelo
 //	public void decrementarStock(List<ItemCatalogo> itemsPedido) {

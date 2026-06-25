@@ -1,25 +1,35 @@
 package eCommerce;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import eCommerce.estados.Estado;
+import eCommerce.estados.EstadoBorrador;
+import eCommerce.item.ItemCatalogo;
 
 public class Pedido {
 	
 	private Estado estado;
-	private List<ItemCatalogo> items;
+	private Map<ItemCatalogo, Integer> items;
 
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
-		this.items = new ArrayList<ItemCatalogo>();
+		this.items = new HashMap<ItemCatalogo, Integer>();
 
 	}
 	
-	public void addItem(ItemCatalogo item) {
+	public void addItem(ItemCatalogo item, Integer cantidad) {
 		if(!estado.sePuedeAgregarProducto()) {
 			throw new RuntimeException("No podes agregar item.");
 		}
-		this.items.add(item);
+		if (!item.hayStock(cantidad)) {
+			throw new RuntimeException("¡No hay stock del item que queres agregar!");
+		}
+//Si ya existia en el map el item que estoy agregando, recupero el stock con getOrDefault y le sumo la cantidad pasada por parametros
+//si no existia getOrDefault te devuelve 0, y le sumo la cantidad. 
+		
+		this.items.put(item, this.items.getOrDefault(item, 0) + cantidad);
 	}
 	
 	public void removeItem(ItemCatalogo item) {
@@ -27,7 +37,7 @@ public class Pedido {
 			throw new RuntimeException("No hay items en el pedido.");
 		}
 		
-		if(!items.contains(item)) {
+		if(!items.containsKey(item)) {
 			throw new RuntimeException("No tenes este item en el pedido.");			
 		}
 				
@@ -55,14 +65,13 @@ public class Pedido {
 	}
 	
 	public void decrementarStock() {
-		items.stream()
-			 .forEach(item -> item.decrementarStock());
+		items.forEach((item, cantidad) -> item.decrementarStock(cantidad));
+
 		
 	}
 	
 	public void devolverStock() {
-		items.stream()
-		 .forEach(item -> item.aumentarStock());
+		items.forEach((item, cantidad) -> item.aumentarStock(cantidad));
 	}
 	
 	public void setEstado(Estado nuevoEstado) {
@@ -73,5 +82,12 @@ public class Pedido {
 		return this.estado;
 	}
 	
+	public Double valorTotalPedido() {
+		//La interfaz dada pide que el tipo sea float, pero manejamos todo con double entonces cuando lo necesitemos, podemos hacer .floatValue().
+		return this.items.entrySet()
+				   .stream()
+				   .mapToDouble(itemCant -> itemCant.getKey().getPrecioFinal() * itemCant.getValue())
+				   .sum();
+	}
 
 }

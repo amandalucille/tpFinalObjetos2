@@ -1,4 +1,4 @@
-package eCommerce;
+package eCommerce.item;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -93,24 +93,26 @@ public class Producto implements ItemCatalogo{
 		return precio;
 	}
 	
-	public Boolean hayStock() {
-		return this.stock >= 1;
+	public Boolean hayStock(Integer cantidad) {
+		return this.stock >= cantidad;
 	}
 	
-	public void decrementarStock() {
+	public void decrementarStock(Integer cantidad) {
 		
-		if (!hayStock()) {
+		if (!hayStock(cantidad)) {
 		    throw new RuntimeException("Sin stock");
 		}
-		this.stock -= 1;
+		this.stock -= cantidad;
 	}
 	
-	public void aumentarStock() {
-		this.stock += 1;
+	public void aumentarStock(Integer cantidad) {
+		this.stock += cantidad;
 	}
 
 	public Double getPeso() {
 		return peso;
 	}
 
+	//Cuando necesite este valor en Float, puedo hacer getPeso().floatValue()
+	
 }

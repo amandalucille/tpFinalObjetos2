@@ -1,8 +1,8 @@
-package eCommerce;
+package eCommerce.item;
 
 import java.util.Objects;
 
-public abstract class Atributo <T> {
+public class Atributo <T> {
 	
 	private String descripcion;
 	private T valor;
@@ -12,6 +12,7 @@ public abstract class Atributo <T> {
 		this.valor = valor;
 
 	}
+	
 	
 	public String getDescripcion() {
 		return this.descripcion;
@@ -24,15 +25,16 @@ public abstract class Atributo <T> {
 	@SuppressWarnings("unchecked")
 	@Override
     public boolean equals(Object obj) {
-        if (this == obj){ 
-        	return true;
-        }
+
         if (!(obj instanceof Atributo)){ 
         	return false;
         }	
 
+        //El if es necesario para que no se intente castear objetos que no sean de tipo atributo 
+        //Si no lo es, corta la ejecución antes de llegar a la comparación. 
+        
         Atributo<T> otro = (Atributo<T> ) obj;
-        return Objects.equals(this.descripcion, otro.getDescripcion());
+        return (this == obj) || Objects.equals(this.descripcion, otro.getDescripcion());
     }
 	 
 	@Override
@@ -40,13 +42,5 @@ public abstract class Atributo <T> {
 		return Objects.hash(descripcion); // mismo criterio que equals
 	}
 
-
-//	public void setDescripcion(String nuevaDescripcion) {
-//		this.descripcion = nuevaDescripcion;
-//	}
-//	public void setValor(T nuevoValor) {
-//		this.valor = nuevoValor;
-//	}
-	
 }
 
