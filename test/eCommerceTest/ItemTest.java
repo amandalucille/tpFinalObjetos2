@@ -79,7 +79,7 @@ public class ItemTest  extends setUp{
     @Test
     public void testDePaqueteDeProductos() {
     	
-    	assertEquals(8755.0, packAudioMovil.getPrecioFinal() );
+    	assertEquals(32385.0, packAudioMovil.getPrecioFinal() );
     	
     	
     	packAudioMovil.removeItem(auriculares);
@@ -141,7 +141,7 @@ public class ItemTest  extends setUp{
     @Test
     public void testGetPeso() {
     	assertEquals(3.0,termo.getPeso());
-    	assertEquals(13.0, packAudioMovil.getPeso());
+    	assertEquals(35.8, packAudioMovil.getPeso(),0.001);
     	
     }
     

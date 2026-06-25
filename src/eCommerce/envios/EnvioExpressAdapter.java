@@ -12,8 +12,9 @@ public class EnvioExpressAdapter implements MetodoDeEnvio{
 		
 		return EnvioExpress.calcularCosto(precio);
 	}
-	public void estimacionDeDias() {
-		System.out.println("Tu pedido llegará en un día hábil");
+	public String estimacionDeDias() {
+		return "Tu pedido llegará en un día hábil";
+		//System.out.println("Tu pedido llegará en un día hábil");
 	}
 	
 	

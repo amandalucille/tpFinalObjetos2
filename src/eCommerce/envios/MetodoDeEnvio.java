@@ -5,6 +5,6 @@ import eCommerce.Pedido;
 public interface MetodoDeEnvio {
 	
 	public float calcularCostoDeEnvio(Pedido pedido);
-	public void estimacionDeDias(); 
+	public String estimacionDeDias(); 
 	
 }

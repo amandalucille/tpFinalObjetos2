@@ -8,12 +8,14 @@ import eCommerce.envios.MetodoDeEnvio;
 import eCommerce.estados.Estado;
 import eCommerce.estados.EstadoBorrador;
 import eCommerce.item.ItemCatalogo;
+import eCommerce.mediosDePago.MetodoDePago;
 
 public class Pedido {
 	
 	private Estado estado;
 	private Map<ItemCatalogo, Integer> items;
 	private MetodoDeEnvio metodoEnvio;
+	private MetodoDePago metodoPago;
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
@@ -46,10 +48,12 @@ public class Pedido {
 		this.items.remove(item);
 	}
 
-	public void prepararPedido(MetodoDeEnvio metodo) {
-		setMetodoDeEnvio(metodo);
-		this.estado.enPreparacion(this); 
-	
+	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago) {
+		setMetodoDeEnvio(metodoDeEnvio);
+		setMetodoDePago(metodoDePago);
+		metodoDePago.procesarPago(this.valorTotalPedido());
+		this.estado.enPreparacion(this);
+		
 	}
 	
 	public void confirmarPedido() {
@@ -97,6 +101,9 @@ public class Pedido {
 	public void setMetodoDeEnvio(MetodoDeEnvio metodo) {
 		this.metodoEnvio = metodo;
 	}
+	public void setMetodoDePago(MetodoDePago metodoDePago) {
+		this.metodoPago = metodoDePago;
+	}
 
 	public Double getPeso() {
 		return this.items.entrySet()
@@ -104,5 +111,6 @@ public class Pedido {
 				   .mapToDouble(itemCant -> itemCant.getKey().getPeso() * itemCant.getValue())
 				   .sum();
 	}
+	
 
 }
