@@ -49,9 +49,9 @@ class setUp {
     	this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 8,5.4);
     	this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", 15.0, 7);
     	
-    	packAudioMovil.addItem(auriculares);
-    	packAudioMovil.addItem(funda);
-    	packAudioMovil.addItem(cable);
+    	packAudioMovil.addItem(auriculares,4);
+    	packAudioMovil.addItem(funda,3);
+    	packAudioMovil.addItem(cable,2);
     	
     	this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 5,4.4);
     	this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4,6.6);
@@ -60,9 +60,9 @@ class setUp {
         
     	this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de auto + mouse + teclado", 3);
     			
-        paqueteHomeOffice.addItem(teclado);
-        paqueteHomeOffice.addItem(mouse);
-        paqueteHomeOffice.addItem(packAudioMovil);
+        paqueteHomeOffice.addItem(teclado,2);
+        paqueteHomeOffice.addItem(mouse,1);
+        paqueteHomeOffice.addItem(packAudioMovil,1);
     	
         this.mercadoLibre = new Catalogo();
         this.mercadoLibre.agregarItem(auriculares);
@@ -77,8 +77,8 @@ class setUp {
         this.mercadoLibre.agregarItem(paqueteHomeOffice);
         
         this.pedido1 = new Pedido();
-        this.pedido1.addItem(mouse);
-        this.pedido1.addItem(teclado);    
+        this.pedido1.addItem(mouse,1);
+        this.pedido1.addItem(teclado,2);    
         
         this.pedidoVacio = new Pedido();
 	}

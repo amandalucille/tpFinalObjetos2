@@ -85,7 +85,7 @@ public class ItemTest  extends setUp{
     	packAudioMovil.removeItem(auriculares);
     	assertEquals(2300.0, packAudioMovil.getPrecioBase() );
     	
-    	packAudioMovil.addItem(auriculares);
+    	packAudioMovil.addItem(auriculares,1);
     		
         
         assertEquals(11555.0, paqueteHomeOffice.getPrecioBase() );
@@ -129,10 +129,10 @@ public class ItemTest  extends setUp{
 
     @Test
     public void testDecrementarStockInvalido() {
-    	RuntimeException exSinStockProducto = assertThrows(RuntimeException.class, () -> productoSinStock.decrementarStock());
+    	RuntimeException exSinStockProducto = assertThrows(RuntimeException.class, () -> productoSinStock.decrementarStock(4));
         assertEquals("Sin stock", exSinStockProducto.getMessage());
         
-        RuntimeException exSinStockPaquete = assertThrows(RuntimeException.class, () -> paqueteSinStock.decrementarStock());
+        RuntimeException exSinStockPaquete = assertThrows(RuntimeException.class, () -> paqueteSinStock.decrementarStock(3));
         assertEquals("Sin stock", exSinStockPaquete.getMessage());
         
     
@@ -147,8 +147,8 @@ public class ItemTest  extends setUp{
     
     @Test
     public void testAumentarStock() {
-    	termo.aumentarStock();
-    	packAudioMovil.aumentarStock();
+    	termo.aumentarStock(3);
+    	packAudioMovil.aumentarStock(2);
     }
     
     @Test

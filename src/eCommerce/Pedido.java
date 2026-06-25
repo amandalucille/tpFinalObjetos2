@@ -3,6 +3,8 @@ package eCommerce;
 import java.util.HashMap;
 import java.util.Map;
 
+import eCommerce.envios.Direccion;
+import eCommerce.envios.MetodoDeEnvio;
 import eCommerce.estados.Estado;
 import eCommerce.estados.EstadoBorrador;
 import eCommerce.item.ItemCatalogo;
@@ -11,12 +13,12 @@ public class Pedido {
 	
 	private Estado estado;
 	private Map<ItemCatalogo, Integer> items;
-
+	private MetodoDeEnvio metodoEnvio;
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
 		this.items = new HashMap<ItemCatalogo, Integer>();
-
+		
 	}
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
@@ -44,8 +46,10 @@ public class Pedido {
 		this.items.remove(item);
 	}
 
-	public void prepararPedido() {
+	public void prepararPedido(MetodoDeEnvio metodo) {
+		setMetodoDeEnvio(metodo);
 		this.estado.enPreparacion(this); 
+	
 	}
 	
 	public void confirmarPedido() {
@@ -87,6 +91,17 @@ public class Pedido {
 		return this.items.entrySet()
 				   .stream()
 				   .mapToDouble(itemCant -> itemCant.getKey().getPrecioFinal() * itemCant.getValue())
+				   .sum();
+	}
+	
+	public void setMetodoDeEnvio(MetodoDeEnvio metodo) {
+		this.metodoEnvio = metodo;
+	}
+
+	public Double getPeso() {
+		return this.items.entrySet()
+				   .stream()
+				   .mapToDouble(itemCant -> itemCant.getKey().getPeso() * itemCant.getValue())
 				   .sum();
 	}
 
