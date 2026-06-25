@@ -7,3 +7,4 @@ __MACOSX/
 .project
 .settings/
 bin/
+/target/

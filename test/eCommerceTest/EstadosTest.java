@@ -1,23 +1,23 @@
 package eCommerceTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 
-import eCommerce.*;
-import eCommerce.estados.EstadoBorrador;
-import eCommerce.estados.EstadoCancelado;
-import eCommerce.estados.EstadoConfirmado;
-import eCommerce.estados.EstadoEnPreparacion;
-import eCommerce.estados.EstadoEntregado;
-import eCommerce.estados.EstadoEnviado;
+
+import eCommerce.envios.*;
+import eCommerce.estados.*;
+
 
 class EstadosTest extends setUp{
 
 	@Test
 	public void testTransicionesInvalidasDeEstadoBorrador() {
+		
+		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
 
-		RuntimeException exPrepararPedido = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido());
+		RuntimeException exPrepararPedido = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock));
         assertEquals("Acción inválida", exPrepararPedido.getMessage());
         
         RuntimeException exEnviarPedido = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido());
@@ -47,12 +47,14 @@ class EstadosTest extends setUp{
 	public void testTransicionesInvalidasDeEstadoEnPreparacion() {
 		//Trancisiones validas: ENVIADO / CANCELADO
 		
+		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+
 		pedido1.setEstado(new EstadoEnPreparacion());
 		
 		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido());
         assertEquals("Acción inválida", exConfirmarPedido.getMessage());
               
-		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido()); // ya estoy en este estado
+		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock)); // ya estoy en este estado
         assertEquals("Acción inválida", exEnPreparacion.getMessage());
                 
         RuntimeException exEntregarPedido = assertThrows(RuntimeException.class, () -> pedido1.entregarPedido());
@@ -62,13 +64,14 @@ class EstadosTest extends setUp{
 	@Test
 	public void testTransicionesInvalidasDeEstadoEnviado() {
 		//Trancisiones validas: ENTREGADO / CANCELADO 
-		
+		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+
 		pedido1.setEstado(new EstadoEnviado());
 		
 		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido());
         assertEquals("Acción inválida", exConfirmarPedido.getMessage());
               
-		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido());
+		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock));
         assertEquals("Acción inválida", exEnPreparacion.getMessage());
                 
         RuntimeException exEnviado = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido()); // ya estoy en este estado
@@ -78,13 +81,14 @@ class EstadosTest extends setUp{
 	@Test
 	public void testTransicionesInvalidasDeEstadoEntregado() {
 		//Trancisiones validas: ninguna
-		
+		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+
 		pedido1.setEstado(new EstadoEntregado());
 		
 		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido());
         assertEquals("Acción inválida", exConfirmarPedido.getMessage());
               
-		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido());
+		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock));
         assertEquals("Acción inválida", exEnPreparacion.getMessage());
         
         RuntimeException exEnviarPedido = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido());
@@ -112,8 +116,11 @@ class EstadosTest extends setUp{
 	
 	@Test
 	public void testTransicionesValidasDeEstadoConfirmado() {
+		
+		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+
 		pedido1.setEstado(new EstadoConfirmado());
-		pedido1.prepararPedido();
+		pedido1.prepararPedido(envioMock);
 		assertInstanceOf(EstadoEnPreparacion.class, pedido1.getEstado());
 		
 		pedido1.setEstado(new EstadoConfirmado());
