@@ -26,7 +26,7 @@ class setUp {
 	Producto productoSinStock;
 	Paquete paqueteSinStock;
 	Paquete paqueteHomeOffice;
-	Catalogo mercadoLibre;
+	ECommerce mercadoLibre;
 	Pedido pedido1; 
 	Pedido pedidoVacio; 
 	
@@ -64,7 +64,7 @@ class setUp {
         paqueteHomeOffice.addItem(mouse,1);
         paqueteHomeOffice.addItem(packAudioMovil,1);
     	
-        this.mercadoLibre = new Catalogo();
+        this.mercadoLibre = new ECommerce();
         this.mercadoLibre.agregarItem(auriculares);
         this.mercadoLibre.agregarItem(notebook);
         this.mercadoLibre.agregarItem(funda);

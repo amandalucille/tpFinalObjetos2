@@ -14,7 +14,6 @@ public class EnvioExpressAdapter implements MetodoDeEnvio{
 	}
 	public String estimacionDeDias() {
 		return "Tu pedido llegará en un día hábil";
-		//System.out.println("Tu pedido llegará en un día hábil");
 	}
 	
 	

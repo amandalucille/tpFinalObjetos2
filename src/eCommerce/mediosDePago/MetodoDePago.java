@@ -19,8 +19,8 @@ public abstract class MetodoDePago {
 	
 	public abstract void ejecutarTransaccion(Double monto);
 	
-	public void notificarResultado() {
-		System.out.println("Tu transaccion ha sido procesada");
+	public String notificarResultado() {
+		return "Tu transaccion ha sido procesada";
 	}
 	
 }

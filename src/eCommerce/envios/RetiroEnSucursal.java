@@ -14,9 +14,9 @@ public class RetiroEnSucursal implements MetodoDeEnvio{
 		return 0;
 	}
 
-	public void estimacionDeDias() {
+	public String estimacionDeDias() {
 		
-		System.out.println("Tu pedido" + (sucursal.hayStockLocal()? "está en el local":"llegará en 3 días"));
+		return "Tu pedido" + (sucursal.hayStockLocal()? "está en el local":"llegará en 3 días");
 	}
 	
 }

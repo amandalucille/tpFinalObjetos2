@@ -16,6 +16,8 @@ public class Pedido {
 	private Map<ItemCatalogo, Integer> items;
 	private MetodoDeEnvio metodoEnvio;
 	private MetodoDePago metodoPago;
+	private Direccion direccionDeEnvio;
+	
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
@@ -48,9 +50,10 @@ public class Pedido {
 		this.items.remove(item);
 	}
 
-	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago) {
+	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago, Direccion direccion) {
 		setMetodoDeEnvio(metodoDeEnvio);
 		setMetodoDePago(metodoDePago);
+		setDireccionDeEnvio(direccion);
 		metodoDePago.procesarPago(this.valorTotalPedido());
 		this.estado.enPreparacion(this);
 		
@@ -104,7 +107,13 @@ public class Pedido {
 	public void setMetodoDePago(MetodoDePago metodoDePago) {
 		this.metodoPago = metodoDePago;
 	}
-
+	
+	public void setDireccionDeEnvio(Direccion direccion) {
+		this.direccionDeEnvio = direccion;
+	}
+	public Direccion getDireccion() {
+		return this.direccionDeEnvio;
+	}
 	public Double getPeso() {
 		return this.items.entrySet()
 				   .stream()
@@ -112,5 +121,12 @@ public class Pedido {
 				   .sum();
 	}
 	
+	public void devolverCostoItems() {
+		
+	}
+	
+	public void devolverCostoEnvio() {
+		
+	}
 
 }
