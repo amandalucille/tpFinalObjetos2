@@ -1,6 +1,7 @@
 package eCommerce;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import eCommerce.envios.Direccion;
@@ -8,6 +9,7 @@ import eCommerce.envios.MetodoDeEnvio;
 import eCommerce.estados.Estado;
 import eCommerce.estados.EstadoBorrador;
 import eCommerce.item.ItemCatalogo;
+import eCommerce.mediosDePago.DatosDePago;
 import eCommerce.mediosDePago.MetodoDePago;
 
 public class Pedido {
@@ -16,8 +18,8 @@ public class Pedido {
 	private Map<ItemCatalogo, Integer> items;
 	private MetodoDeEnvio metodoEnvio;
 	private MetodoDePago metodoPago;
-	private Direccion direccionDeEnvio;
-	
+	private Direccion direccionDeEnvio; 
+	private List<PedidoObserver> observers;
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
@@ -50,11 +52,11 @@ public class Pedido {
 		this.items.remove(item);
 	}
 
-	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago, Direccion direccion) {
+	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago, DatosDePago datos, Direccion direccion) {
 		setMetodoDeEnvio(metodoDeEnvio);
 		setMetodoDePago(metodoDePago);
 		setDireccionDeEnvio(direccion);
-		metodoDePago.procesarPago(this.valorTotalPedido());
+		metodoDePago.procesarPago(datos, this.valorTotalPedido());
 		this.estado.enPreparacion(this);
 		
 	}
@@ -122,11 +124,22 @@ public class Pedido {
 	}
 	
 	public void devolverCostoItems() {
-		
+		devolverMonto(this.valorTotalPedido());
 	}
 	
-	public void devolverCostoEnvio() {
+	public void devolverCostoItemsYEnvio() {
+		devolverMonto(this.valorTotalPedido() + this.metodoEnvio.calcularCostoDeEnvio(this));
+	}
+	
+	public void devolverMonto(Double monto) {
+	
+		NotaDeCredito nota = new NotaDeCredito( monto, this);
 		
+		this.observers.forEach(o -> o.addNotaDeCredito(nota));
+	}
+
+	public void subscribeObserver(PedidoObserver observer) {
+		this.observers.add(observer);
 	}
 
 }

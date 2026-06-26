@@ -7,17 +7,17 @@ public abstract class MetodoDePago {
 	
 	private List<Comprobante> comprobantes;
 	
-	public final void procesarPago(Double montoPedido) {
-		validarDatos();
-		reservarFondos(montoPedido);
-		ejecutarTransaccion(montoPedido);
+	public final void procesarPago(DatosDePago datos, Double montoPedido) {
+		validarDatos(datos);
+		reservarFondos(datos, montoPedido);
+		ejecutarTransaccion(datos, montoPedido);
 		notificarResultado();
 	}
-	public abstract void validarDatos();
+	public abstract void validarDatos(DatosDePago datos);
 	
-	public abstract void reservarFondos(Double monto);
+	public abstract void reservarFondos(DatosDePago datos, Double monto);
 	
-	public abstract void ejecutarTransaccion(Double monto);
+	public abstract void ejecutarTransaccion(DatosDePago datos, Double monto);
 	
 	public String notificarResultado() {
 		return "Tu transaccion ha sido procesada";

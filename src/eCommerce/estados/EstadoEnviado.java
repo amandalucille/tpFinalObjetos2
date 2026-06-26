@@ -10,12 +10,12 @@ public class EstadoEnviado extends Estado {
 	@Override
 	public void entregado(Pedido pedido){
 		pedido.setEstado(new EstadoEntregado());
-	}
+	} 
 
 	@Override
 	public void cancelar(Pedido pedido){
 		pedido.devolverStock();
-	//	pedido.devolverCosto(); 
+	 	pedido.devolverCostoItems(); 
 		pedido.setEstado(new EstadoCancelado());
 	}
 }
