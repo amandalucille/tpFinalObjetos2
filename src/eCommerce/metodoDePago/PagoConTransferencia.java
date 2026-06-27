@@ -24,7 +24,7 @@ public class PagoConTransferencia extends MetodoDePago {
 	}
 	@Override
 	public void ejecutarTransaccion(Pedido pedido) {
-		super.setNroTransaccion(this.apiTransferencia.transferir(cbu,pedido.montoTotalAPagar()));
+		super.setDatosTransaccion(this.apiTransferencia.transferirYNotificar(cbu,pedido.montoTotalAPagar()));
 	}
 	
 }

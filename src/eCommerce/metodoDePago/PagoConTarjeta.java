@@ -31,7 +31,7 @@ public class PagoConTarjeta extends MetodoDePago {
 	}
 	@Override
 	public void ejecutarTransaccion(Pedido pedido) {
-		super.setNroTransaccion(this.apiTarjeta.transferir(pedido.montoTotalAPagar(),nroTarjeta));
+		super.setDatosTransaccion(this.apiTarjeta.transferirYNotificar(pedido.montoTotalAPagar(),nroTarjeta));
 	}
 		
 }

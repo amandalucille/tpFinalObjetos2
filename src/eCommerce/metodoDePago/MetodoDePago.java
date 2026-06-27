@@ -5,7 +5,7 @@ import eCommerce.comprobantes.Comprobante;
 public abstract class MetodoDePago {
 	 
 	private Comprobante comprobante;
-	private String nroTransaccion;
+	private String datosTransaccion;
 	
 	public final void procesarPago(Pedido pedido) {
 		
@@ -20,7 +20,7 @@ public abstract class MetodoDePago {
 	public abstract void ejecutarTransaccion(Pedido pedido);
 	
 	public void notificarResultado(Pedido pedido) {
-		this.setComprobante(new Comprobante(this.getNroTransaccion()));
+		this.setComprobante(new Comprobante(this.getDatosTransaccion()));
 	}
 	
 	public void setComprobante(Comprobante comprobante) {
@@ -29,11 +29,11 @@ public abstract class MetodoDePago {
 	public Comprobante getComprobante() {
 		return this.comprobante;
 	}
-	public String getNroTransaccion() {
-		return nroTransaccion;
+	public String getDatosTransaccion() {
+		return datosTransaccion;
 	}
-	public void setNroTransaccion(String nroTransaccion) {
-		this.nroTransaccion = nroTransaccion;
+	public void setDatosTransaccion(String nroTransaccion) {
+		this.datosTransaccion = nroTransaccion;
 	}
 	
 	

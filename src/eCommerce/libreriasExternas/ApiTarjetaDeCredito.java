@@ -7,6 +7,6 @@ public interface ApiTarjetaDeCredito {
 
 	public void preAutorizar(Double monto, Integer nroTarjeta);
 
-	public String transferir(Double monto, Integer nroTarjeta);
+	public String transferirYNotificar(Double monto, Integer nroTarjeta);
 
 }

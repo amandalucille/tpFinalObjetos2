@@ -24,11 +24,11 @@ public class PagoConBilleteraVirtual extends MetodoDePago {
 
 	@Override
 	public void ejecutarTransaccion(Pedido pedido) {
-		super.setNroTransaccion(this.apiBV.pagar(pedido.montoTotalAPagar()));
+		super.setDatosTransaccion(this.apiBV.pagar(pedido.montoTotalAPagar()));
 		
 	}
 	@Override
 	public void notificarResultado(Pedido pedido) {
-		this.apiBV.sendNotificacionPush(super.getNroTransaccion());
+		this.apiBV.sendNotificacionPush(super.getDatosTransaccion());
 	}
 }
