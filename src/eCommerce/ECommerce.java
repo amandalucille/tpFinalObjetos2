@@ -13,7 +13,7 @@ public class ECommerce{
 
 	private Set<ItemCatalogo> itemsDelCatalogo;
 	private List<Pedido> pedidos;
-
+	
 	
 	public ECommerce() {
 		this.itemsDelCatalogo = new HashSet<>();
@@ -41,6 +41,17 @@ public class ECommerce{
 					  .filter(c -> c != null) 
 					  .toList();
 	}
+	
+	public List<ItemCatalogo> filtrar(CriterioDeBusqueda criterio){
+		return itemsDelCatalogo.stream()
+							   .filter(item -> criterio.cumple(item))
+							   .toList();
+	}
+	
+	
+//	itemsFiltrados = Ecommerce.aplicarFiltro(precioMenor(10000).and(cateogoria(Electrodomestico)).and(nombre("Lava")))
+
+
 }
 
 

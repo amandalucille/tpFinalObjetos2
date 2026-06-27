@@ -18,7 +18,8 @@ public class Producto implements ItemCatalogo{
 	
 	
 	public Producto(String sku, String nombre, String descripcion,
-	            String marca, String categoria, Double precio, Double descuento, Integer stock, Double peso) {
+	                String marca, String categoria, Double precio, 
+	                Double descuento, Integer stock, Double peso) {
 		this.sku = sku;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -38,6 +39,9 @@ public class Producto implements ItemCatalogo{
 		this(sku, nombre, descripcion, marca, categoria, precio, 0.0, stock,peso);
 	}
 	
+	public String getCategoria() {
+		return this.categoria;
+	}
 	
 	public Double getPrecioFinal() {
 		return this.getPrecioBase() * (1 - this.descuento / 100); 

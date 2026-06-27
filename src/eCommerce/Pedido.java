@@ -26,6 +26,7 @@ public class Pedido {
 	private List<PedidoObserver> suscriptores;
 	private NotaDeCredito notaDeCredito;
 	
+	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
 		this.items = new HashMap<ItemCatalogo, Integer>();

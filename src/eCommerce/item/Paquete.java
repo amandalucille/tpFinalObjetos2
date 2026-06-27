@@ -9,10 +9,12 @@ public class Paquete implements ItemCatalogo{
 	private Double descuento;
 	private Map<ItemCatalogo, Integer> items;
 	private Integer stock;
+	private String categoria;
 	
-	public Paquete(String nombre, String descripcion, Double descuento, Integer stock) {
+	public Paquete(String nombre, String descripcion, String categoria, Double descuento, Integer stock) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.categoria = categoria;
 		this.descuento = descuento;
 		this.items = new HashMap<>();
 		this.stock = stock;
@@ -20,8 +22,8 @@ public class Paquete implements ItemCatalogo{
 		this.validarItem();
 	}
 	
-	public Paquete(String nombre, String descripcion, Integer stock) {
-		this(nombre, descripcion, 0.0, stock);
+	public Paquete(String nombre, String descripcion, String categoria, Integer stock) {
+		this(nombre, descripcion, categoria, 0.0, stock);
 	}
 	
 	public String getNombre() {
@@ -32,6 +34,10 @@ public class Paquete implements ItemCatalogo{
 		return this.descripcion;
 	}
 
+	public String getCategoria() {
+		return this.categoria;
+	}
+	
 	public Double getPrecioBase() {
 		return this.items.entrySet()
 						 .stream()

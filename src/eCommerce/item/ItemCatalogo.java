@@ -2,6 +2,7 @@ package eCommerce.item;
 
 public interface ItemCatalogo {
 	public String  getNombre();
+	public String  getCategoria();
 	public Integer stockDisponible();
 	public String  getDescripcion();
 	public Double  getPrecioBase();
