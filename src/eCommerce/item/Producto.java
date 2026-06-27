@@ -3,6 +3,8 @@ package eCommerce.item;
 import java.util.HashSet;
 import java.util.Set;
 
+import eCommerce.visitor.ReporteVisitor;
+
 public class Producto implements ItemCatalogo{
 	
 	private String sku;
@@ -120,6 +122,10 @@ public class Producto implements ItemCatalogo{
 	public Integer stockDisponible() {
 		return this.stock ;
 	}
-
 	
+	public void aceptar(ReporteVisitor reporteVisitor) {
+		reporteVisitor.visitar(this);
+		
+	}
+
 }

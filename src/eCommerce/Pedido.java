@@ -25,12 +25,13 @@ public class Pedido {
 	private Direccion direccionDeEnvio;
 	private List<PedidoObserver> suscriptores;
 	private NotaDeCredito notaDeCredito;
+	private ECommerce eCommerce;
 	
-	
-	public Pedido() {
-		this.estado = new EstadoBorrador();
-		this.items = new HashMap<ItemCatalogo, Integer>();
+	public Pedido(ECommerce eCommerce) {
+		this.estado 	  = new EstadoBorrador();
+		this.items		  = new HashMap<ItemCatalogo, Integer>();
 		this.suscriptores = new ArrayList<>();
+		this.eCommerce 	  = eCommerce;
 	}
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
@@ -59,7 +60,7 @@ public class Pedido {
 		setDireccionDeEnvio(direccion);
 		metodoDePago.procesarPago(this);
 		this.estado.enPreparacion(this);
-		
+		this.eCommerce.agregarNuevaVenta(new Venta(this, preciosPorItem()));
 	}
 	
 	public void confirmarPedido() {
@@ -177,5 +178,18 @@ public class Pedido {
 	
 	public Comprobante getComprobante() {
 		return this.metodoPago.getComprobante();
+	}
+	public Boolean esVentaExitosa() {
+		return this.notaDeCredito == null;
+	}
+	public Integer cantidadVendidaDe(ItemCatalogo item) {
+		return this.items.getOrDefault(item, 0);
+	}
+	
+	public Map<ItemCatalogo, Integer> preciosPorItem() {
+		Map<ItemCatalogo, Integer> map = new HashMap<>();
+		return this.items.entrySet().stream()
+									.forEach(i -> map.put())
+						 
 	}
 }

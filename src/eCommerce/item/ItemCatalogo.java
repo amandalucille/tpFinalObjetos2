@@ -1,5 +1,7 @@
 package eCommerce.item;
 
+import eCommerce.visitor.ReporteVisitor;
+
 public interface ItemCatalogo {
 	public String  getNombre();
 	public String  getCategoria();
@@ -13,4 +15,5 @@ public interface ItemCatalogo {
 	public void    validarItem();
 	public Boolean esItemValido();
 	public Boolean hayStock(Integer cantidad);
+	public void	   aceptar(ReporteVisitor visitor);
 }

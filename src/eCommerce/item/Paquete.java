@@ -3,6 +3,8 @@ package eCommerce.item;
 import java.util.HashMap;
 import java.util.Map;
 
+import eCommerce.visitor.ReporteVisitor;
+
 public class Paquete implements ItemCatalogo{
 	private String nombre;
 	private String descripcion;
@@ -95,5 +97,9 @@ public class Paquete implements ItemCatalogo{
 
 	public Integer stockDisponible() {
 		return this.stock;
+	}
+	public void aceptar(ReporteVisitor reporteVisitor) {
+		reporteVisitor.visitar(this);
+		
 	}
 }
