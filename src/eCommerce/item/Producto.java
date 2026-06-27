@@ -121,6 +121,5 @@ public class Producto implements ItemCatalogo{
 		return this.stock ;
 	}
 
-	//Cuando necesite este valor en Float, puedo hacer getPeso().floatValue()
 	
 }

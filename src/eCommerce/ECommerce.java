@@ -47,12 +47,8 @@ public class ECommerce{
 		return itemsDelCatalogo.stream()
 							   .filter(item -> criterio.cumple(item))
 							   .toList();
+		
 	}
-	
-	
-//	itemsFiltrados = Ecommerce.aplicarFiltro(precioMenor(10000).and(cateogoria(Electrodomestico)).and(nombre("Lava")))
-
-
 }
 
 

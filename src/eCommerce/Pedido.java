@@ -35,9 +35,9 @@ public class Pedido {
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
 		estado.validarPuedoAgregar(); 
-//Si ya existia en el map el item que estoy agregando, recupero el stock con getOrDefault y le sumo la cantidad pasada por parametros
-//si no existia getOrDefault te devuelve 0, y le sumo la cantidad. 
-		
+		//Si ya existia en el map el item que estoy agregando, recupero el stock con getOrDefault y le sumo la cantidad pasada por parametros
+		//si no existia getOrDefault te devuelve 0, y le sumo la cantidad. 
+				
 		this.items.put(item, this.items.getOrDefault(item, 0) + cantidad);
 	}
 	
