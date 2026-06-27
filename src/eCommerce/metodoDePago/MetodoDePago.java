@@ -8,7 +8,6 @@ public abstract class MetodoDePago {
 	private String datosTransaccion;
 	
 	public final void procesarPago(Pedido pedido) {
-		
 		validarDatos(pedido);
 		reservarFondos(pedido);
 		ejecutarTransaccion(pedido);

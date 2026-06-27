@@ -8,7 +8,7 @@ public class EnvioExpressAdapter implements MetodoDeEnvio{
 	
 	
 	public float calcularCostoDeEnvio(Pedido pedido) {
-		float precio = pedido.valorTotalPedido().floatValue();
+		float precio = pedido.montoTotalItems().floatValue();
 		
 		return EnvioExpress.calcularCosto(precio);
 	}

@@ -1,5 +1,6 @@
 package eCommerce;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import eCommerce.estados.Estado;
 import eCommerce.estados.EstadoBorrador;
 import eCommerce.item.ItemCatalogo;
 import eCommerce.metodoDePago.MetodoDePago;
+import eCommerce.suscriptores.PedidoObserver;
 
 public class Pedido {
 	
@@ -20,14 +22,14 @@ public class Pedido {
 	private Map<ItemCatalogo, Integer> items;
 	private MetodoDeEnvio metodoEnvio;
 	private MetodoDePago metodoPago;
-	private Direccion direccionDeEnvio; 
-	private List<PedidoObserver> observers;
+	private Direccion direccionDeEnvio;
+	private List<PedidoObserver> suscriptores;
 	private NotaDeCredito notaDeCredito;
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
 		this.items = new HashMap<ItemCatalogo, Integer>();
-		
+		this.suscriptores = new ArrayList<>();
 	}
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
@@ -60,27 +62,34 @@ public class Pedido {
 	}
 	
 	public void confirmarPedido() {
+		this.validarStockItems();
 		
+		this.decrementarStock();
+		this.estado.confirmar(this);
+		this.suscriptores.forEach(o -> o.notificarPedidoConfirmado());
+	}
+	
+	public void validarStockItems() {
 		items.forEach((item,cantidad)-> {
 			if (!item.hayStock(cantidad)){
 				throw new StockInsuficienteException(item.getNombre(),item.stockDisponible());
 			}
 		});
-		
-		this.decrementarStock();
-		this.estado.confirmar(this);
 	}
 	
 	public void enviarPedido() {
 		this.estado.enviar(this); 
+		this.suscriptores.forEach(o -> o.notificarPedidoEnviado());
 	}
 	
 	public void entregarPedido() {
 		this.estado.entregado(this); 
+		this.suscriptores.forEach(o -> o.notificarPedidoEntregado(this));
 	}
 	
 	public void cancelarPedido() {
 		this.estado.cancelar(this); 
+		 this.suscriptores.forEach(o -> o.notificarPedidoCancelado());
 	}
 	
 	public void decrementarStock() {
@@ -101,19 +110,26 @@ public class Pedido {
 		return this.estado;
 	}
 	
-	public Double valorTotalPedido() {
+	public Double montoTotalItems() {
 		//La interfaz dada pide que el tipo sea float, pero manejamos todo con double entonces cuando lo necesitemos, podemos hacer .floatValue().
 		return this.items.entrySet()
 				   .stream()
 				   .mapToDouble(itemCant -> itemCant.getKey().getPrecioFinal() * itemCant.getValue())
 				   .sum();
 	}
+	
 	public Double montoTotalAPagar() {
-		return this.valorTotalPedido() + this.metodoEnvio.calcularCostoDeEnvio(this);
+		return this.montoTotalItems() + this.montoEnvio();
 	}
+	
+	public Float montoEnvio() {
+		return this.metodoEnvio.calcularCostoDeEnvio(this);
+	}
+	
 	public void setMetodoDeEnvio(MetodoDeEnvio metodo) {
 		this.metodoEnvio = metodo;
 	}
+	
 	public void setMetodoDePago(MetodoDePago metodoDePago) {
 		this.metodoPago = metodoDePago;
 	}
@@ -121,9 +137,11 @@ public class Pedido {
 	public void setDireccionDeEnvio(Direccion direccion) {
 		this.direccionDeEnvio = direccion;
 	}
+	
 	public Direccion getDireccion() {
 		return this.direccionDeEnvio;
 	}
+	
 	public Double getPeso() {
 		return this.items.entrySet()
 				   .stream()
@@ -132,24 +150,26 @@ public class Pedido {
 	}
 	
 	public void devolverCostoItems() {
-		devolverMonto(this.valorTotalPedido());
+		devolverMonto(this.montoTotalItems());
 	}
 	
 	public void devolverCostoItemsYEnvio() {
-		devolverMonto(this.valorTotalPedido() + this.metodoEnvio.calcularCostoDeEnvio(this));
+		devolverMonto(this.montoTotalItems() + this.metodoEnvio.calcularCostoDeEnvio(this));
 	}
 	
 	public void devolverMonto(Double monto) {
-	
-		NotaDeCredito nota = new NotaDeCredito( monto, this);
+		this.notaDeCredito = new NotaDeCredito( monto, this);
 		
-		this.observers.forEach(o -> o.addNotaDeCredito(nota));
 	}
 
 	public void subscribeObserver(PedidoObserver observer) {
-		this.observers.add(observer);
+		this.suscriptores.add(observer);
 	}
 
+	public void desubscribirObserver(PedidoObserver observer) {
+		this.suscriptores.remove(observer);
+	}
+	
 	public NotaDeCredito getNotaDeCredito() {
 		return this.notaDeCredito; 
 	}
