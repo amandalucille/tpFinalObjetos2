@@ -2,10 +2,10 @@ package eCommerce.filtro;
 
 import eCommerce.item.ItemCatalogo;
 
-public class BusquedaPorNombre extends CriterioDeBusqueda {
+public class FiltroPorNombre extends CriterioDeBusqueda {
 	private String nombre;
 	
-	public BusquedaPorNombre(String nombre) {
+	public FiltroPorNombre(String nombre) {
 		this.nombre = nombre.toLowerCase(); // pasa todo el string a minúscula: JaVa --> java
 	}
 	

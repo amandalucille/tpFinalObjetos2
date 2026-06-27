@@ -7,6 +7,7 @@ import java.util.Set;
 
 import eCommerce.comprobantes.Comprobante;
 import eCommerce.comprobantes.NotaDeCredito;
+import eCommerce.filtro.CriterioDeBusqueda;
 import eCommerce.item.ItemCatalogo;
 
 public class ECommerce{
