@@ -33,36 +33,43 @@ class setUp {
 	
 	@BeforeEach
 	public void Setup() {
+	
+		//Productos
 		this.termo = new Producto("123", "Termo", "Termo acero", "Lumilagro", "Bazar", 1000.0, 0,3.0);
         this.mate = new Producto("456", "Mate", "Mate de madera", "Urquiza", "Bazar", 1000.0, 15.0, 1,4.5);
         this.notebook = new Producto("999", "Notebook", "Computadora", "Dell", "Tech", 150000.0, 100,2.0);
         this.productoSinStock = new Producto("000", "Notebook", "Computadora", "Dell", "Tech", 150000.0, 0, 2.0);
+        this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0, 10,2.2);
+    	this.funda = new Producto("111", "Funda protectora", "Funda de silicona", "shein", "Accesorio", 1500.0, 9,5.4);
+    	this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 8,5.4);
+    	this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 5,4.4);
+    	this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4,6.6);
+    	
+    	//Paquetes
+    	this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", 15.0, 7);
         this.paqueteSinStock = new Paquete("paquete","paquete", 0);
         
+        
+        //Atributos dinamicos para la notebook y el mouse
         notebook.agregarAtributo(peso);
         notebook.agregarAtributo(color);
         notebook.agregarAtributo(esNuevo);
         notebook.agregarAtributo(pulgadas);
+
+        mouse.agregarAtributo(color);
         
-        this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0, 10,2.2);
-    	this.funda = new Producto("111", "Funda protectora", "Funda de silicona", "shein", "Accesorio", 1500.0, 9,5.4);
-    	this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 8,5.4);
-    	this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", 15.0, 7);
-    	
+    	//Agrega items al paquete
     	packAudioMovil.addItem(auriculares,4);
     	packAudioMovil.addItem(funda,3);
     	packAudioMovil.addItem(cable,2);
     	
-    	this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 5,4.4);
-    	this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4,6.6);
-        mouse.agregarAtributo(color);
-    	
-        
-    	this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de auto + mouse + teclado", 3);
+        // el paquete home office tiene 2 teclados, 1 mouse y 1 packAudio. Hay un total de 3 paquetes de home office 
+    	this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de audio + mouse + teclado", 3);
     			
         paqueteHomeOffice.addItem(teclado,2);
         paqueteHomeOffice.addItem(mouse,1);
         paqueteHomeOffice.addItem(packAudioMovil,1);
+        
     	
         this.mercadoLibre = new ECommerce();
         this.mercadoLibre.agregarItem(auriculares);
