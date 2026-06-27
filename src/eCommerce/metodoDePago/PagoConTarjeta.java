@@ -6,7 +6,6 @@ import eCommerce.libreriasExternas.ApiTarjetaDeCredito;
 
 public class PagoConTarjeta extends MetodoDePago {
 	
-	private String nroCupon;
 	private Integer nroTarjeta;
 	private Integer cvv;
 	private String fechaDeVencimiento;
@@ -32,8 +31,7 @@ public class PagoConTarjeta extends MetodoDePago {
 	}
 	@Override
 	public void ejecutarTransaccion(Pedido pedido) {
-		this.nroCupon = this.apiTarjeta.transferir(pedido.montoTotalAPagar(),nroTarjeta);
-		super.setComprobante(new Comprobante(nroCupon));
+		super.setNroTransaccion(this.apiTarjeta.transferir(pedido.montoTotalAPagar(),nroTarjeta));
 	}
 		
 }

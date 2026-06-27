@@ -13,3 +13,4 @@ public class EnvioEstandarAdapter implements MetodoDeEnvio{
 		return "Tu pedido llegará entre 5 y 7 días hábiles";
 	}
 }
+

@@ -6,18 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 import eCommerce.comprobantes.Comprobante;
+import eCommerce.comprobantes.NotaDeCredito;
 import eCommerce.item.ItemCatalogo;
 
-public class ECommerce implements PedidoObserver{
+public class ECommerce{
 
 	private Set<ItemCatalogo> itemsDelCatalogo;
 	private List<Pedido> pedidos;
-	private List<NotaDeCredito> notasDeCredito;
-	private List<Comprobante> comprobantesDePago;
+
 	
 	public ECommerce() {
 		this.itemsDelCatalogo = new HashSet<>();
-		this.notasDeCredito = new ArrayList<>();
 		this.pedidos = new ArrayList<>();
 	}
 	
@@ -27,19 +26,21 @@ public class ECommerce implements PedidoObserver{
 	
 	public void agregarPedido(Pedido pedido) {
 		this.pedidos.add(pedido);
-		pedido.subscribeObserver(this);
 	}
 	
-	@Override
-	public void addNotaDeCredito(NotaDeCredito notaDeCredito) {
-		this.notasDeCredito.add(notaDeCredito);
-	}
-
-	@Override
-	public void addComprobanteDePago(Comprobante comprobanteDePago) {
-		this.comprobantesDePago.add(comprobanteDePago);		
+	public List<NotaDeCredito> getNotasDeCredito() {
+		return pedidos.stream()
+					  .map(pedido -> pedido.getNotaDeCredito())
+					  .filter(nc -> nc != null) 
+					  .toList();
 	}
 	
+	public List<Comprobante> getComprobante() {
+		return pedidos.stream()
+					  .map(pedido -> pedido.getComprobante())
+					  .filter(c -> c != null) 
+					  .toList();
+	}
 }
 
 

@@ -5,5 +5,7 @@ public interface ApiBilleteraVirtual {
 	
 	public void bloquearMonto(Double monto);
 	
-	public void pagar(Double monto);
+	public String pagar(Double monto);
+	
+	public void sendNotificacionPush(String nroTransaccion);
 }

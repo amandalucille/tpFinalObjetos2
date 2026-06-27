@@ -1,4 +1,6 @@
-package eCommerce;
+package eCommerce.comprobantes;
+
+import eCommerce.Pedido;
 
 public class NotaDeCredito {
 	private Double monto;

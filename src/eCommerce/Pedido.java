@@ -1,17 +1,17 @@
 package eCommerce;
 
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 
+import eCommerce.comprobantes.Comprobante;
+import eCommerce.comprobantes.NotaDeCredito;
 import eCommerce.envios.Direccion;
 import eCommerce.envios.MetodoDeEnvio;
 import eCommerce.errores.StockInsuficienteException;
 import eCommerce.estados.Estado;
 import eCommerce.estados.EstadoBorrador;
 import eCommerce.item.ItemCatalogo;
-import eCommerce.mediosDePago.DatosDePago;
 import eCommerce.metodoDePago.MetodoDePago;
 
 public class Pedido {
@@ -22,6 +22,7 @@ public class Pedido {
 	private MetodoDePago metodoPago;
 	private Direccion direccionDeEnvio; 
 	private List<PedidoObserver> observers;
+	private NotaDeCredito notaDeCredito;
 	
 	public Pedido() {
 		this.estado = new EstadoBorrador();
@@ -54,7 +55,6 @@ public class Pedido {
 		setMetodoDePago(metodoDePago);
 		setDireccionDeEnvio(direccion);
 		metodoDePago.procesarPago(this);
-		this.observers.forEach(o -> o.addComprobanteDePago(metodoDePago.getComprobante()));
 		this.estado.enPreparacion(this);
 		
 	}
@@ -150,4 +150,11 @@ public class Pedido {
 		this.observers.add(observer);
 	}
 
+	public NotaDeCredito getNotaDeCredito() {
+		return this.notaDeCredito; 
+	}
+	
+	public Comprobante getComprobante() {
+		return this.metodoPago.getComprobante();
+	}
 }

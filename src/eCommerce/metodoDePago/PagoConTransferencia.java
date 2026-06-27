@@ -5,7 +5,6 @@ import eCommerce.comprobantes.Comprobante;
 import eCommerce.libreriasExternas.ApiTransferenciaBancaria;
 
 public class PagoConTransferencia extends MetodoDePago {
-	private String nroComprobante;
 	private String cbu;
 	private String alias;
 	private ApiTransferenciaBancaria apiTransferencia;
@@ -21,12 +20,11 @@ public class PagoConTransferencia extends MetodoDePago {
 	}
 	@Override
 	public void reservarFondos(Pedido pedido) {
-		
+		//No se usa porque este método no reserva fondos.
 	}
 	@Override
 	public void ejecutarTransaccion(Pedido pedido) {
-		this.nroComprobante = this.apiTransferencia.transferir(cbu,pedido.montoTotalAPagar()); 
-		this.setComprobante(new Comprobante(nroComprobante)); 
+		super.setNroTransaccion(this.apiTransferencia.transferir(cbu,pedido.montoTotalAPagar()));
 	}
 	
 }
