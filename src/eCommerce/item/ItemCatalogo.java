@@ -1,6 +1,8 @@
 package eCommerce.item;
 
 public interface ItemCatalogo {
+	public String  getNombre();
+	public Integer stockDisponible();
 	public String  getDescripcion();
 	public Double  getPrecioBase();
 	public Double  getPrecioFinal();

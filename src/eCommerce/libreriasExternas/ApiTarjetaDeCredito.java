@@ -1,13 +1,12 @@
 package eCommerce.libreriasExternas;
 
-import java.util.Date;
 
 public interface ApiTarjetaDeCredito {
 
-	void validarDatos(Integer nroTarjeta, Integer cvv, Date fechaDeVencimiento);
+	public void validarDatos(Integer nroTarjeta, Integer cvv, String fechaDeVencimiento);
 
-	void preAutorizar(Double monto, Integer nroTarjeta);
+	public void preAutorizar(Double monto, Integer nroTarjeta);
 
-	void transferir(Double monto, Integer nroTarjeta);
+	public String transferir(Double monto, Integer nroTarjeta);
 
 }

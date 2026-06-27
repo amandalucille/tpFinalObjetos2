@@ -1,6 +1,6 @@
 package eCommerce;
 
-import eCommerce.mediosDePago.Comprobante;
+import eCommerce.comprobantes.Comprobante;
 
 public interface PedidoObserver {
 	public void addNotaDeCredito(NotaDeCredito notaDeCredito);

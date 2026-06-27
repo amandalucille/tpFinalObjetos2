@@ -1,16 +1,18 @@
 package eCommerce;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
 import eCommerce.envios.Direccion;
 import eCommerce.envios.MetodoDeEnvio;
+import eCommerce.errores.StockInsuficienteException;
 import eCommerce.estados.Estado;
 import eCommerce.estados.EstadoBorrador;
 import eCommerce.item.ItemCatalogo;
 import eCommerce.mediosDePago.DatosDePago;
-import eCommerce.mediosDePago.MetodoDePago;
+import eCommerce.metodoDePago.MetodoDePago;
 
 public class Pedido {
 	
@@ -28,12 +30,7 @@ public class Pedido {
 	}
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
-		if(!estado.sePuedeAgregarProducto()) {
-			throw new RuntimeException("No podes agregar item.");
-		}
-		if (!item.hayStock(cantidad)) {
-			throw new RuntimeException("¡No hay stock del item que queres agregar!");
-		}
+		estado.validarPuedoAgregar(); 
 //Si ya existia en el map el item que estoy agregando, recupero el stock con getOrDefault y le sumo la cantidad pasada por parametros
 //si no existia getOrDefault te devuelve 0, y le sumo la cantidad. 
 		
@@ -52,16 +49,25 @@ public class Pedido {
 		this.items.remove(item);
 	}
 
-	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago, DatosDePago datos, Direccion direccion) {
+	public void prepararPedido(MetodoDeEnvio metodoDeEnvio, MetodoDePago metodoDePago, Direccion direccion) {
 		setMetodoDeEnvio(metodoDeEnvio);
 		setMetodoDePago(metodoDePago);
 		setDireccionDeEnvio(direccion);
-		metodoDePago.procesarPago(datos, this.valorTotalPedido());
+		metodoDePago.procesarPago(this);
+		this.observers.forEach(o -> o.addComprobanteDePago(metodoDePago.getComprobante()));
 		this.estado.enPreparacion(this);
 		
 	}
 	
 	public void confirmarPedido() {
+		
+		items.forEach((item,cantidad)-> {
+			if (!item.hayStock(cantidad)){
+				throw new StockInsuficienteException(item.getNombre(),item.stockDisponible());
+			}
+		});
+		
+		this.decrementarStock();
 		this.estado.confirmar(this);
 	}
 	
@@ -102,7 +108,9 @@ public class Pedido {
 				   .mapToDouble(itemCant -> itemCant.getKey().getPrecioFinal() * itemCant.getValue())
 				   .sum();
 	}
-	
+	public Double montoTotalAPagar() {
+		return this.valorTotalPedido() + this.metodoEnvio.calcularCostoDeEnvio(this);
+	}
 	public void setMetodoDeEnvio(MetodoDeEnvio metodo) {
 		this.metodoEnvio = metodo;
 	}

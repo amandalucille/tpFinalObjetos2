@@ -3,11 +3,9 @@ package eCommerce.estados;
 import eCommerce.Pedido;
 
 public abstract class Estado {
-
-//	protected RuntimeException errorDeTransicion = new RuntimeException("Acción inválida");
 	
-	public boolean sePuedeAgregarProducto() {
-		return false;				//Se inicializa false para todos.
+	public void validarPuedoAgregar() {
+		throw new RuntimeException("No podes agregar item.");
 	}
 	
 	protected RuntimeException errorDeTransicion() {

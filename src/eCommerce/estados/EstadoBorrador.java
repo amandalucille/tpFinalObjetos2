@@ -7,14 +7,12 @@ public class EstadoBorrador extends Estado {
 	//Trancisiones validas: CANCELADO / CONFIRMADO
 	
 	@Override
-	public boolean sePuedeAgregarProducto(){
-		return true;
+	public void validarPuedoAgregar(){
 		
 	}
 	
 	@Override
 	public void confirmar(Pedido pedido){
-		pedido.decrementarStock();
 		pedido.setEstado(new EstadoConfirmado());
 		
 		//Ver el orden de estos dos. Que pasa primero? 

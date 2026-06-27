@@ -86,4 +86,8 @@ public class Paquete implements ItemCatalogo{
 			   (this.descripcion != null && !this.descripcion.isBlank()) &&
 			   (this.stock       != null && this.stock >= 0);
 	}
+
+	public Integer stockDisponible() {
+		return this.stock;
+	}
 }

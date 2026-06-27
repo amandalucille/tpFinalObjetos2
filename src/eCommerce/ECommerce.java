@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import eCommerce.comprobantes.Comprobante;
 import eCommerce.item.ItemCatalogo;
-import eCommerce.mediosDePago.Comprobante;
 
 public class ECommerce implements PedidoObserver{
 

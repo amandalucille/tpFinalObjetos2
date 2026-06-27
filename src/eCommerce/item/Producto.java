@@ -113,6 +113,10 @@ public class Producto implements ItemCatalogo{
 		return peso;
 	}
 
+	public Integer stockDisponible() {
+		return this.stock ;
+	}
+
 	//Cuando necesite este valor en Float, puedo hacer getPeso().floatValue()
 	
 }
