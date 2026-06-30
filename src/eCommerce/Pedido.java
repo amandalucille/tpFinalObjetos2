@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import eCommerce.comprobantes.Comprobante;
 import eCommerce.comprobantes.NotaDeCredito;
@@ -188,8 +189,8 @@ public class Pedido {
 	
 	public Map<ItemCatalogo, Integer> preciosPorItem() {
 		Map<ItemCatalogo, Integer> map = new HashMap<>();
-		return this.items.entrySet().stream()
-									.forEach(i -> map.put())
-						 
+		return this.items.entrySet()
+						 .stream()
+						 .collect(Collectors.toMap(map.Entry::getKey, entry -> entry.getKey().getPrecioFinal()));
 	}
 }
