@@ -3,6 +3,7 @@ package eCommerce.item;
 import java.util.HashMap;
 import java.util.Map;
 
+import eCommerce.errores.*;
 import eCommerce.visitor.ReporteVisitor;
 
 public class Paquete implements ItemCatalogo{
@@ -84,15 +85,18 @@ public class Paquete implements ItemCatalogo{
 					.sum();
 	}
 	public void validarItem() {
-		if (!esItemValido()) {
-			throw new RuntimeException("No es un Paquete válido");
-		}
+	    if (this.nombre == null || this.nombre.isBlank()) {
+	        throw new ItemInvalidoException("Nombre Desconocido", "El nombre del paquete no puede estar nulo o vacío.");
+	    }
+	    
+	    if (this.descripcion == null || this.descripcion.isBlank()) {
+	        throw new ItemInvalidoException(this.nombre, "La descripción del paquete es obligatoria.");
+	    }
+	    
+	    if (this.stock == null || this.stock < 0) {
+	        throw new ItemInvalidoException(this.nombre, "El stock no puede ser nulo ni tener un valor negativo.");
+	    }
 		
-	}
-	public Boolean esItemValido() {
-		return (this.nombre 	 != null && !this.nombre.isBlank()) 	 &&
-			   (this.descripcion != null && !this.descripcion.isBlank()) &&
-			   (this.stock       != null && this.stock >= 0);
 	}
 
 	public Integer stockDisponible() {

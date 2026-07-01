@@ -1,31 +1,34 @@
 package eCommerce.estados;
 
 import eCommerce.Pedido;
+import eCommerce.errores.TransicionDeEstadoInvalidaException;
 
 public abstract class Estado {
 	
-	public void validarPuedoAgregar() {
-		throw new RuntimeException("No podes agregar item.");
+	protected void errorDeTransicion(String operacion) {
+		throw new TransicionDeEstadoInvalidaException(
+			"Operación inválida: No se puede '" + operacion + "' en el estado actual."
+		);
 	}
 	
-	protected RuntimeException errorDeTransicion() {
-	    return new RuntimeException("Acción inválida");
+	public void validarSiPuedoAgregarOSacarItems() {
+		errorDeTransicion("agregar o quitar ítems");
 	}
 	
 	public void confirmar(Pedido pedido) {
-		throw errorDeTransicion();
+		errorDeTransicion("confirmar el pedido");
 	 }
 	public void enPreparacion(Pedido pedido){
-		throw errorDeTransicion();
+		errorDeTransicion("pasar a preparación");
 	 }
 	public void enviar(Pedido pedido){
-		throw errorDeTransicion();
+		errorDeTransicion("enviar el pedido");
 	 }
 	public void entregado(Pedido pedido){
-		throw errorDeTransicion();
+		errorDeTransicion("entregar el pedido");
 	 }
 	public void cancelar(Pedido pedido){
-		throw errorDeTransicion();
+		errorDeTransicion("cancelar el pedido");
 	 }
 
 }

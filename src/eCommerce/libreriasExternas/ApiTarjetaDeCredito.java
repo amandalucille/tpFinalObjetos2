@@ -3,9 +3,9 @@ package eCommerce.libreriasExternas;
 
 public interface ApiTarjetaDeCredito {
 
-	public void validarDatos(Integer nroTarjeta, Integer cvv, String fechaDeVencimiento);
+	public Boolean validarDatos(Integer nroTarjeta, Integer cvv, String fechaDeVencimiento);
 
-	public void preAutorizar(Double monto, Integer nroTarjeta);
+	public Boolean preAutorizar(Double monto, Integer nroTarjeta);
 
 	public String transferirYNotificar(Double monto, Integer nroTarjeta);
 

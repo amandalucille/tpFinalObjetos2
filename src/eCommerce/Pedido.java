@@ -10,9 +10,8 @@ import eCommerce.comprobantes.Comprobante;
 import eCommerce.comprobantes.NotaDeCredito;
 import eCommerce.envios.Direccion;
 import eCommerce.envios.MetodoDeEnvio;
-import eCommerce.errores.StockInsuficienteException;
-import eCommerce.estados.Estado;
-import eCommerce.estados.EstadoBorrador;
+import eCommerce.errores.*;
+import eCommerce.estados.*;
 import eCommerce.item.ItemCatalogo;
 import eCommerce.metodoDePago.MetodoDePago;
 import eCommerce.suscriptores.PedidoObserver;
@@ -36,7 +35,7 @@ public class Pedido {
 	}
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
-		estado.validarPuedoAgregar(); 
+		estado.validarSiPuedoAgregarOSacarItems(); 
 		//Si ya existia en el map el item que estoy agregando, recupero el stock con getOrDefault y le sumo la cantidad pasada por parametros
 		//si no existia getOrDefault te devuelve 0, y le sumo la cantidad. 
 				
@@ -49,13 +48,14 @@ public class Pedido {
 	
 	public void removeItem(ItemCatalogo item) {
 		if(items.isEmpty()) {
-			throw new RuntimeException("No hay items en el pedido.");
+			throw new PedidoVacioException("No se pueden quitar ítems: el pedido actual está vacío.");
 		}
 		
 		if(!items.containsKey(item)) {
-			throw new RuntimeException("No tenes este item en el pedido.");			
+			throw new ItemNoEncontradoException("El ítem que intentas remover no se encuentra en este pedido.");			
 		}
-				
+		
+		estado.validarSiPuedoAgregarOSacarItems();
 		this.items.remove(item);
 	}
 
@@ -69,10 +69,9 @@ public class Pedido {
 	}
 	
 	public void confirmarPedido() {
+		this.estado.confirmar(this);	
 		this.validarStockItems();
-		
 		this.decrementarStock();
-		this.estado.confirmar(this);
 		this.suscriptores.forEach(o -> o.notificarPedidoConfirmado());
 	}
 	

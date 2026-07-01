@@ -1,5 +1,7 @@
 package eCommerce.item;
 
+import eCommerce.errores.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,21 +52,37 @@ public class Producto implements ItemCatalogo{
 	}
 	
 	public void validarItem() {
-		if (!esItemValido()) {
-			throw new RuntimeException("No es un producto válido");
-		}
-	}
-	
-	public Boolean esItemValido() {
-		return (this.sku    	 != null && !this.sku.isBlank()) 		 &&   
-			   (this.nombre 	 != null && !this.nombre.isBlank())  	 && 
-			   (this.descripcion != null && !this.descripcion.isBlank()) && 
-			   (this.marca 		 != null && !this.marca.isBlank()) 		 &&
-			   (this.categoria 	 != null && !this.categoria.isBlank())	 &&
-			   (this.precio 	 != null && this.precio > 0)             &&
-			   (this.stock       != null && this.stock >= 0)			 &&
-			   (this.peso 		 != null && this.peso > 0);
-		
+	    if (this.nombre == null || this.nombre.isBlank()) {
+	        throw new ItemInvalidoException("Producto Desconocido", "El nombre del producto es obligatorio y no puede estar vacío.");
+	    }
+
+	    if (this.sku == null || this.sku.isBlank()) {
+	        throw new ItemInvalidoException(this.nombre, "El SKU no puede ser nulo o vacío.");
+	    }
+
+	    if (this.descripcion == null || this.descripcion.isBlank()) {
+	        throw new ItemInvalidoException(this.nombre, "La descripción del producto es obligatoria.");
+	    }
+
+	    if (this.marca == null || this.marca.isBlank()) {
+	        throw new ItemInvalidoException(this.nombre, "La marca del producto es obligatoria.");
+	    }
+
+	    if (this.categoria == null || this.categoria.isBlank()) {
+	        throw new ItemInvalidoException(this.nombre, "La categoría del producto es obligatoria.");
+	    }
+
+	    if (this.precio == null || this.precio <= 0) {
+	        throw new ItemInvalidoException(this.nombre, "El precio debe ser un valor mayor a 0.");
+	    }
+
+	    if (this.stock == null || this.stock < 0) {
+	        throw new ItemInvalidoException(this.nombre, "El stock no puede ser nulo ni tener un valor negativo.");
+	    }
+
+	    if (this.peso == null || this.peso <= 0) {
+	        throw new ItemInvalidoException(this.nombre, "El peso del producto debe ser un valor mayor a 0.");
+	    }
 	}
 	
 	public void agregarAtributo(Atributo<?> atributo) {

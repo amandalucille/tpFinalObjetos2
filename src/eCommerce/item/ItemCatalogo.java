@@ -13,7 +13,6 @@ public interface ItemCatalogo {
 	public void    aumentarStock(Integer cantidad);
 	public Double  getPeso();
 	public void    validarItem();
-	public Boolean esItemValido();
 	public Boolean hayStock(Integer cantidad);
 	public void	   aceptar(ReporteVisitor visitor);
 }

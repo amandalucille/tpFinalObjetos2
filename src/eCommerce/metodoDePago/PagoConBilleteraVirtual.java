@@ -1,6 +1,7 @@
 package eCommerce.metodoDePago;
 
 import eCommerce.Pedido;
+import eCommerce.errores.PagoRechazadoException;
 import eCommerce.libreriasExternas.ApiBilleteraVirtual;
 
 public class PagoConBilleteraVirtual extends MetodoDePago {
@@ -12,7 +13,12 @@ public class PagoConBilleteraVirtual extends MetodoDePago {
 	
 	@Override
 	public void validarDatos(Pedido pedido) {
-			this.apiBV.saldoSuficiente(pedido.montoTotalAPagar());
+		
+		Boolean tieneSaldo = this.apiBV.saldoSuficiente(pedido.montoTotalAPagar());
+		
+		if (!tieneSaldo) {
+			throw new PagoRechazadoException("Fondos insuficientes en la Billetera Virtual para abonar el pedido.");
+		}
 		
 	}
 

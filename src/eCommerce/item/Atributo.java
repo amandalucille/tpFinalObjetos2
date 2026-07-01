@@ -2,6 +2,8 @@ package eCommerce.item;
 
 import java.util.Objects;
 
+import eCommerce.errores.AtributoInvalidoException;
+
 public class Atributo <T> {
 	
 	private String descripcion;
@@ -10,7 +12,18 @@ public class Atributo <T> {
 	public Atributo (String descripcion, T valor) {
 		this.descripcion = descripcion;
 		this.valor = valor;
+		
+		validarAtributo();
 
+	}
+	
+	public void validarAtributo() {
+		if (descripcion == null || descripcion.isBlank()) {
+			throw new AtributoInvalidoException("La descripción del atributo no puede ser nula o vacía.");
+		}
+		if (valor == null) {
+			throw new AtributoInvalidoException("El atributo '" + descripcion + "' debe tener un valor asignado.");		
+		}
 	}
 	
 	
