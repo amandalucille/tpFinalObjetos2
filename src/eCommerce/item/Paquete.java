@@ -75,7 +75,8 @@ public class Paquete implements ItemCatalogo{
 	
 	
 	public void removeItem(ItemCatalogo item) {
-		this.items.remove(item); //Agregar que le devuelva el stock al item. (Cantidad * stock del paquete)s
+		item.aumentarStock(this.stock * this.items.get(item)); //Lle devuelva el stock al item. (Cantidad * stock del paquete)s
+		this.items.remove(item); 
 	}
 	
 	@Override

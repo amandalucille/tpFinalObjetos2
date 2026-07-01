@@ -17,7 +17,7 @@ public class Factura {
 		generarCredencialesItems(pedido);
 	}
 	
-	public Double totalFacturadoItems() {
+	public Double totalFacturado() {
 		return preciosPorItem.stream()
 							 .mapToDouble(i -> i.getPrecioUnitarioFinal() * i.getCantidadVendida() )
 							 .sum() + getMontoEnvio();

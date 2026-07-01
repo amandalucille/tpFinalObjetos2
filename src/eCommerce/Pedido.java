@@ -90,9 +90,9 @@ public class Pedido {
 	
 	public void cancelarPedido() {
 		this.estado.cancelar(this); 
-		 this.suscriptores.forEach(o -> o.notificarPedidoCancelado());
+		this.suscriptores.forEach(o -> o.notificarPedidoCancelado());
 	}
-	
+
 	public void decrementarStock() {
 		items.forEach((item, cantidad) -> item.decrementarStock(cantidad));
 

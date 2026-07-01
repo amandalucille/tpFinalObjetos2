@@ -66,6 +66,7 @@ public class SetUp {
 		this.apiMsgSenderMock = mock(MessageSender.class);
 		this.correoArgentinaMock = mock(CorreoArgentina.class);
 		this.envioExpressMock = mock(EnvioExpress.class);
+		this.sucursalMock = mock(Sucursal.class);
 		
 		this.mercadoLibre = new ECommerce(apiMailSenderMock, apiMsgSenderMock);
 		setUpItems();
@@ -86,7 +87,7 @@ public class SetUp {
 		this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 10, 4.4);
 		this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4, 6.6);
     	
-		this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", "Audio", 15.0, 7);
+		this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", "Audio", 15.0, 3);
 		this.paqueteSinStock = new Paquete("paquete", "paquete", "Varios", 0);
 		this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de audio + mouse + teclado", "Oficina", 3);
 		

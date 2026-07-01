@@ -1,9 +1,6 @@
 package eCommerce.libreriasExternas;
 
-public class Sucursal {
+public interface Sucursal {
 	
-	public Boolean hayStockLocal() {
-		return true;
-		
-	}
+	public Boolean hayStockLocal();
 }

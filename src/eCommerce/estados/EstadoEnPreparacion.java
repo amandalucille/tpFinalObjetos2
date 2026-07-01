@@ -12,7 +12,6 @@ public class EstadoEnPreparacion extends Estado {
 		pedido.setEstado(new EstadoEnviado());
 		
 	}
-
 	@Override
 	public void cancelar(Pedido pedido){
 		pedido.devolverStock();
