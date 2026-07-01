@@ -1,7 +1,7 @@
 package eCommerce.metodoDePago;
 
 import eCommerce.Pedido;
-import eCommerce.comprobantes.Comprobante;
+import eCommerce.comprobantes.ComprobanteTransferencia;
 import eCommerce.errores.PagoRechazadoException;
 import eCommerce.libreriasExternas.ApiTransferenciaBancaria;
 
@@ -32,6 +32,11 @@ public class PagoConTransferencia extends MetodoDePago {
 	@Override
 	public void ejecutarTransaccion(Pedido pedido) {
 		super.setDatosTransaccion(this.apiTransferencia.transferirYNotificar(cbu, pedido.montoTotalAPagar()));
+	}
+	
+	@Override
+	public void notificarResultado(Pedido pedido) {
+		 this.setComprobante(new ComprobanteTransferencia(this.cbu, this.getDatosTransaccion()));
 	}
 
 }

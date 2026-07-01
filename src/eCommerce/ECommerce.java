@@ -2,13 +2,10 @@ package eCommerce;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import eCommerce.ResumenVentaItem.*;
 import eCommerce.comprobantes.Comprobante;
 import eCommerce.comprobantes.DetalleFacturableItem;
 import eCommerce.comprobantes.Factura;
@@ -20,7 +17,6 @@ import eCommerce.libreriasExternas.MessageSender;
 import eCommerce.suscriptores.Fidelizador;
 import eCommerce.suscriptores.GeneradorDeFactura;
 import eCommerce.suscriptores.NotificadorDeEmail;
-import eCommerce.suscriptores.PedidoObserver;
 import eCommerce.visitor.ReporteVentas;
 import eCommerce.visitor.ReporteVisitor;
 
@@ -28,8 +24,6 @@ public class ECommerce{
 
 	private Set<ItemCatalogo> itemsDelCatalogo;
 	private List<Pedido> pedidos;
-	private List<Venta> ventas;
-	private List<PedidoObserver> suscriptores;
 	private GeneradorDeFactura generadorDeFacturas;
 	private MailSender apiMail;
 	private MessageSender apiMsg;
@@ -40,11 +34,7 @@ public class ECommerce{
 		this.pedidos = new ArrayList<>();
 		this.generadorDeFacturas = new GeneradorDeFactura();
 		this.apiMail = apiMail;
-		this.apiMsg = apiMsg;
-		
-		
-		this.suscriptores = new ArrayList<>(List.of(generadorDeFacturas));
-		
+		this.apiMsg = apiMsg;		
 	}
 	
 	public Pedido newPedido(DatosCliente datosCliente ) {
@@ -134,28 +124,6 @@ public class ECommerce{
 	            // ordena de manera descendente segun el criterio que yo quiero. En este caso por cantidad de ventas de cada item
 	            .sorted(Comparator.comparing( (ResumenVentaItem r) -> r.getCantidadVendida() ).reversed()) // lo ordena de mayor a menor
 	            .toList();
-	}
-			
-	
-	
-	
-	public List<Pedido> ventasExitosas(){
-		return pedidos.stream()
-					  .filter(p -> p.esVentaExitosa())
-					  .toList();
-	}
-	
-	public Integer cantidadDeVentasDelItem(ItemCatalogo item) {
-		
-		return this.ventasExitosas().stream()
-									.mapToInt(p -> p.cantidadVendidaDe(item))
-									.sum();
-		
-	}
-
-	public void agregarNuevaVenta(Venta venta) {
-		this.ventas.add(venta);
-		
 	}
 }
 

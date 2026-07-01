@@ -1,7 +1,7 @@
 package eCommerce.metodoDePago;
 
 import eCommerce.Pedido;
-import eCommerce.comprobantes.Comprobante;
+import eCommerce.comprobantes.CuponDePago;
 import eCommerce.errores.PagoRechazadoException;
 import eCommerce.libreriasExternas.ApiTarjetaDeCredito;
 
@@ -39,5 +39,10 @@ public class PagoConTarjeta extends MetodoDePago {
 	public void ejecutarTransaccion(Pedido pedido) {
 		super.setDatosTransaccion(this.apiTarjeta.transferirYNotificar(pedido.montoTotalAPagar(),nroTarjeta));
 	}
+	
+	@Override
+    public void notificarResultado(Pedido pedido) {
+        this.setComprobante(new CuponDePago(this.getDatosTransaccion()));
+    }
 		
 }
