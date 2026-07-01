@@ -191,10 +191,4 @@ public class Pedido {
 		return this.items.getOrDefault(item, 0);
 	}
 	
-	public Map<ItemCatalogo, Integer> preciosPorItem() {
-		Map<ItemCatalogo, Integer> map = new HashMap<>();
-		return this.items.entrySet()
-						 .stream()
-						 .collect(Collectors.toMap(itemCant -> itemCant.getKey().getPrecioFinal()));
-	}
 }

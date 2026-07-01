@@ -21,6 +21,7 @@ import eCommerce.suscriptores.Fidelizador;
 import eCommerce.suscriptores.GeneradorDeFactura;
 import eCommerce.suscriptores.NotificadorDeEmail;
 import eCommerce.suscriptores.PedidoObserver;
+import eCommerce.visitor.ReporteVentas;
 import eCommerce.visitor.ReporteVisitor;
 
 public class ECommerce{
@@ -85,8 +86,9 @@ public class ECommerce{
 		
 	}
 	
-	public void reporteDeProductosMasVendidos(ReporteVisitor reporte) {
-		//FALTA!!
+	public String reporteDeProductosMasVendidos(ReporteVisitor reporte) {
+		return new ReporteVentas(this).generarReporteDeMasVendidos(reporte);
+
 	}
 	
 	public List<Factura> getFacturas() {
