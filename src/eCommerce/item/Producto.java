@@ -104,7 +104,7 @@ public class Producto implements ItemCatalogo{
 		return (T) this.atributos.stream()
 							 	 .filter(atributo -> atributo.getDescripcion().equals(descripcion))
 							     .findFirst()
-							     .orElseThrow(() -> new RuntimeException("El atributo '" + descripcion + "' no existe"))
+							     .orElseThrow(() -> new AtributoNoEncontradoException("El atributo '" + descripcion + "' no existe"))
 							     .getValor();	
 	}
 	
@@ -132,7 +132,7 @@ public class Producto implements ItemCatalogo{
 	public void decrementarStock(Integer cantidad) {
 		
 		if (!hayStock(cantidad)) {
-		    throw new RuntimeException("Sin stock");
+		    throw new StockInsuficienteException(getNombre(), cantidad);
 		}
 		this.stock -= cantidad;
 	}

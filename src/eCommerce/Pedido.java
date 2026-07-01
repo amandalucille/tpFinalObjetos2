@@ -64,8 +64,8 @@ public class Pedido {
 	}
 	
 	public void confirmarPedido() {
-		this.estado.confirmar(this);	
-		this.validarStockItems();
+		this.validarStockItems(); //Antes de cambiar de estado, tiene que validarse que haya stock de los items seleccionados. 
+		this.estado.confirmar(this);	 
 		this.decrementarStock();
 		this.suscriptores.forEach(o -> o.notificarPedidoConfirmado());
 	}
@@ -176,7 +176,7 @@ public class Pedido {
 	}
 	
 	public Comprobante getComprobante() {
-		return this.metodoPago.getComprobante();
+		return this.metodoPago != null ? this.metodoPago.getComprobante() : null;
 	}
 	public Boolean esVentaExitosa() {
 		return this.notaDeCredito == null;
