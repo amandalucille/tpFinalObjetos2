@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import eCommerce.comprobantes.Comprobante;
 import eCommerce.comprobantes.DetalleFacturableItem;
@@ -59,20 +60,20 @@ public class ECommerce{
 		return pedidos.stream()
 					  .map(pedido -> pedido.getNotaDeCredito())
 					  .filter(nc -> nc != null) 
-					  .toList();
+					  .collect(Collectors.toList());
 	}
 	
 	public List<Comprobante> getComprobante() {
 		return pedidos.stream()
 					  .map(pedido -> pedido.getComprobante())
 					  .filter(c -> c != null) 
-					  .toList();
+					  .collect(Collectors.toList());
 	}
 	
 	public List<ItemCatalogo> filtrar(CriterioDeBusqueda criterio){
 		return itemsDelCatalogo.stream()
 							   .filter(item -> criterio.cumple(item))
-							   .toList();
+							   .collect(Collectors.toList());
 		
 	}
 	
@@ -89,7 +90,7 @@ public class ECommerce{
 		//Guardo en una lista todos los DetalleFacturableItem de todas mis facturas generadas. El flaten es para pasar de una "lista de listas" a una "lista"
 		List<DetalleFacturableItem> todosLosDetalles = generadorDeFacturas.getFacturas().stream()
 	            																		.flatMap(f -> f.getDetalles().stream())
-	            																		.toList();
+	            																		.collect(Collectors.toList());
 		
 		// recorro mi lista de items preguntandole a la lista auxiliar de DetalleFacturableItem los detalles de cada item de mi catalogo: cantidadVendida, 
 		// totalBase, totalFinal, para despues calcular los promedios y generar un ResumenVentaItem que guarda toda esa información 
@@ -98,7 +99,7 @@ public class ECommerce{
 	            				// me quedo con los DetalleFacturableItem del item que estoy consultando en este momento
 				                List<DetalleFacturableItem> detallesDelItem = todosLosDetalles.stream()
 				                        													  .filter(d -> d.getItem().equals(item))
-				                        													  .toList(); 
+				                        													  .collect(Collectors.toList()); 
 				                // a esa lista de DetalleFacturableItem filtrada le consulto la cantidad vendida haciendo la suma
 				                Integer cantidadVendida = detallesDelItem.stream()
 												                         .mapToInt( dItem -> dItem.getCantidadVendida())
@@ -123,7 +124,7 @@ public class ECommerce{
 				            })
 	            // ordena de manera descendente segun el criterio que yo quiero. En este caso por cantidad de ventas de cada item
 	            .sorted(Comparator.comparing( (ResumenVentaItem r) -> r.getCantidadVendida() ).reversed()) // lo ordena de mayor a menor
-	            .toList();
+	            .collect(Collectors.toList());
 	}
 }
 

@@ -1,6 +1,5 @@
 package eCommerce.comprobantes;
 
-import eCommerce.Pedido;
 import eCommerce.item.ItemCatalogo;
 
 public class DetalleFacturableItem {
