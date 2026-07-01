@@ -4,151 +4,234 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import eCommerce.Pedido;
+import eCommerce.errores.TransicionDeEstadoInvalidaException;
+import eCommerce.estados.Estado;
+import eCommerce.estados.EstadoBorrador;
+import eCommerce.estados.EstadoCancelado;
+import eCommerce.estados.EstadoConfirmado;
+import eCommerce.estados.EstadoEnPreparacion;
+import eCommerce.estados.EstadoEntregado;
+import eCommerce.estados.EstadoEnviado;
 
 
-import eCommerce.envios.*;
-import eCommerce.estados.*;
-
-
-class EstadosTest extends SetUp{
+class EstadosTest extends SetUp {
 
 	@Test
-	public void testTransicionesInvalidasDeEstadoBorrador() {
-		
-		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+	public void testTransicionesEstadoBorrador() {
+		Estado estadoBorrador = new EstadoBorrador();
+		Pedido pedidoMock = mock(Pedido.class);
 
-		RuntimeException exPrepararPedido = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock));
-        assertEquals("Acción inválida", exPrepararPedido.getMessage());
-        
-        RuntimeException exEnviarPedido = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido());
-        assertEquals("Acción inválida", exEnviarPedido.getMessage());
-        
-        RuntimeException exEntregarPedido = assertThrows(RuntimeException.class, () -> pedido1.entregarPedido());
-        assertEquals("Acción inválida", exEntregarPedido.getMessage());
+		// validarSiPuedoAgregarOSacarItems() no lanza excepción
+		assertDoesNotThrow(() -> estadoBorrador.validarSiPuedoAgregarOSacarItems());
+
+		// confirmar() -> pasa a EstadoConfirmado
+		estadoBorrador.confirmar(pedidoMock);
+		// un objeto que "atrapa" (captura) el argumento real que se usó en la llamada
+		ArgumentCaptor<Estado> captorConfirmar = ArgumentCaptor.forClass(Estado.class);
+		verify(pedidoMock).setEstado(captorConfirmar.capture());
+		assertInstanceOf(EstadoConfirmado.class, captorConfirmar.getValue());
+
+		// cancelar() -> pasa a EstadoCancelado, y NO devuelve stock ni plata
+		// (desde Borrador nunca se decrementó nada)
+		Pedido otroPedidoMock = mock(Pedido.class);
+		estadoBorrador.cancelar(otroPedidoMock);
+		ArgumentCaptor<Estado> captorCancelar = ArgumentCaptor.forClass(Estado.class);
+		verify(otroPedidoMock).setEstado(captorCancelar.capture());
+		assertInstanceOf(EstadoCancelado.class, captorCancelar.getValue());
+		verify(otroPedidoMock, never()).devolverStock();
+		verify(otroPedidoMock, never()).devolverCostoItems();
+		verify(otroPedidoMock, never()).devolverCostoItemsYEnvio();
+
+		// transiciones inválidas
+		Pedido pedidoInvalidoMock = mock(Pedido.class);
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoBorrador.enPreparacion(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoBorrador.enviar(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoBorrador.entregado(pedidoInvalidoMock));
+
+		// Confirmamos que ninguna de las 3 tocó al pedido de ninguna forma
+		verifyNoInteractions(pedidoInvalidoMock);
 	}
 	
 	@Test
-	public void testTransicionesInvalidasDeEstadoConfirmado() {
+	public void testTransicionesEstadoConfirmado() {
+		Estado estadoConfirmado = new EstadoConfirmado();
+
+		// validarSiPuedoAgregarOSacarItems() lanza excepción (hereda el comportamiento base)
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoConfirmado.validarSiPuedoAgregarOSacarItems());
+
+		// enPreparacion() -> pasa a EstadoEnPreparacion
+		Pedido pedidoMock = mock(Pedido.class);
+		estadoConfirmado.enPreparacion(pedidoMock);
+		ArgumentCaptor<Estado> captorEnPreparacion = ArgumentCaptor.forClass(Estado.class);
+		verify(pedidoMock).setEstado(captorEnPreparacion.capture());
+		assertInstanceOf(EstadoEnPreparacion.class, captorEnPreparacion.getValue());
+
+		// cancelar() -> pasa a EstadoCancelado, devuelve stock, pero NO devuelve costos
+		Pedido otroPedidoMock = mock(Pedido.class);
+		estadoConfirmado.cancelar(otroPedidoMock);
+		ArgumentCaptor<Estado> captorCancelar = ArgumentCaptor.forClass(Estado.class);
+		verify(otroPedidoMock).setEstado(captorCancelar.capture());
+		assertInstanceOf(EstadoCancelado.class, captorCancelar.getValue());
+		verify(otroPedidoMock).devolverStock();
+		//
+		verify(otroPedidoMock, never()).devolverCostoItems();
+		verify(otroPedidoMock, never()).devolverCostoItemsYEnvio();
+
+		// transiciones inválidas
+		Pedido pedidoInvalidoMock = mock(Pedido.class);
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoConfirmado.confirmar(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoConfirmado.enviar(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoConfirmado.entregado(pedidoInvalidoMock));
+
+		verifyNoInteractions(pedidoInvalidoMock);
+	}
 	
-		//Trancisiones validas: EN PREPARACION / CANCELADO
-		pedido1.setEstado(new EstadoConfirmado());
-		
-		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido()); // ya estoy en este estado
-        assertEquals("Acción inválida", exConfirmarPedido.getMessage());
-                
-        RuntimeException exEnviarPedido = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido());
-        assertEquals("Acción inválida", exEnviarPedido.getMessage());
-        
-        RuntimeException exEntregarPedido = assertThrows(RuntimeException.class, () -> pedido1.entregarPedido());
-        assertEquals("Acción inválida", exEntregarPedido.getMessage());
+	@Test
+	public void testTransicionesEstadoEnPreparacion() {
+		Estado estadoEnPreparacion = new EstadoEnPreparacion();
+
+		// validarSiPuedoAgregarOSacarItems() lanza excepción
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnPreparacion.validarSiPuedoAgregarOSacarItems());
+
+		// enviar() -> pasa a EstadoEnviado
+		Pedido pedidoMock = mock(Pedido.class);
+		estadoEnPreparacion.enviar(pedidoMock);
+		ArgumentCaptor<Estado> captorEnviar = ArgumentCaptor.forClass(Estado.class);
+		verify(pedidoMock).setEstado(captorEnviar.capture());
+		assertInstanceOf(EstadoEnviado.class, captorEnviar.getValue());
+
+		// cancelar() -> pasa a EstadoCancelado, devuelve stock Y costo de items + envío
+		Pedido otroPedidoMock = mock(Pedido.class);
+		estadoEnPreparacion.cancelar(otroPedidoMock);
+		ArgumentCaptor<Estado> captorCancelar = ArgumentCaptor.forClass(Estado.class);
+		verify(otroPedidoMock).setEstado(captorCancelar.capture());
+		assertInstanceOf(EstadoCancelado.class, captorCancelar.getValue());
+		verify(otroPedidoMock).devolverStock();
+		verify(otroPedidoMock).devolverCostoItemsYEnvio();
+		verify(otroPedidoMock, never()).devolverCostoItems();
+
+		// transiciones inválidas
+		Pedido pedidoInvalidoMock = mock(Pedido.class);
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnPreparacion.confirmar(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnPreparacion.enPreparacion(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnPreparacion.entregado(pedidoInvalidoMock));
+
+		verifyNoInteractions(pedidoInvalidoMock);
+	}
+	
+	@Test
+	public void testTransicionesEstadoEnviado() {
+		Estado estadoEnviado = new EstadoEnviado();
+
+		// 19) validarSiPuedoAgregarOSacarItems() lanza excepción
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnviado.validarSiPuedoAgregarOSacarItems());
+
+		// 20) entregado() -> pasa a EstadoEntregado
+		Pedido pedidoMock = mock(Pedido.class);
+		estadoEnviado.entregado(pedidoMock);
+		ArgumentCaptor<Estado> captorEntregado = ArgumentCaptor.forClass(Estado.class);
+		verify(pedidoMock).setEstado(captorEntregado.capture());
+		assertInstanceOf(EstadoEntregado.class, captorEntregado.getValue());
+
+		// 21) cancelar() -> pasa a EstadoCancelado, devuelve stock Y costo de items, NUNCA envío
+		Pedido otroPedidoMock = mock(Pedido.class);
+		estadoEnviado.cancelar(otroPedidoMock);
+		ArgumentCaptor<Estado> captorCancelar = ArgumentCaptor.forClass(Estado.class);
+		verify(otroPedidoMock).setEstado(captorCancelar.capture());
+		assertInstanceOf(EstadoCancelado.class, captorCancelar.getValue());
+		verify(otroPedidoMock).devolverStock();
+		verify(otroPedidoMock).devolverCostoItems();
+		verify(otroPedidoMock, never()).devolverCostoItemsYEnvio();
+
+		// 22), 23), 24) transiciones inválidas
+		Pedido pedidoInvalidoMock = mock(Pedido.class);
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnviado.confirmar(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnviado.enPreparacion(pedidoInvalidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEnviado.enviar(pedidoInvalidoMock));
+
+		verifyNoInteractions(pedidoInvalidoMock);
+	}
+	
+	@Test
+	public void testTransicionesEstadoEntregado() {
+		Estado estadoEntregado = new EstadoEntregado();
+		Pedido pedidoMock = mock(Pedido.class);
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEntregado.validarSiPuedoAgregarOSacarItems());
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEntregado.confirmar(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEntregado.enPreparacion(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEntregado.enviar(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEntregado.entregado(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoEntregado.cancelar(pedidoMock));
+
+		verifyNoInteractions(pedidoMock);
 	}
 
 	@Test
-	public void testTransicionesInvalidasDeEstadoEnPreparacion() {
-		//Trancisiones validas: ENVIADO / CANCELADO
-		
-		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+	public void testTransicionesEstadoCancelado() {
+		Estado estadoCancelado = new EstadoCancelado();
+		Pedido pedidoMock = mock(Pedido.class);
 
-		pedido1.setEstado(new EstadoEnPreparacion());
-		
-		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido());
-        assertEquals("Acción inválida", exConfirmarPedido.getMessage());
-              
-		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock)); // ya estoy en este estado
-        assertEquals("Acción inválida", exEnPreparacion.getMessage());
-                
-        RuntimeException exEntregarPedido = assertThrows(RuntimeException.class, () -> pedido1.entregarPedido());
-        assertEquals("Acción inválida", exEntregarPedido.getMessage());
-	}
-	
-	@Test
-	public void testTransicionesInvalidasDeEstadoEnviado() {
-		//Trancisiones validas: ENTREGADO / CANCELADO 
-		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoCancelado.validarSiPuedoAgregarOSacarItems());
 
-		pedido1.setEstado(new EstadoEnviado());
-		
-		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido());
-        assertEquals("Acción inválida", exConfirmarPedido.getMessage());
-              
-		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock));
-        assertEquals("Acción inválida", exEnPreparacion.getMessage());
-                
-        RuntimeException exEnviado = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido()); // ya estoy en este estado
-        assertEquals("Acción inválida", exEnviado.getMessage());
-	}
-	
-	@Test
-	public void testTransicionesInvalidasDeEstadoEntregado() {
-		//Trancisiones validas: ninguna
-		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoCancelado.confirmar(pedidoMock));
 
-		pedido1.setEstado(new EstadoEntregado());
-		
-		RuntimeException exConfirmarPedido = assertThrows(RuntimeException.class, () -> pedido1.confirmarPedido());
-        assertEquals("Acción inválida", exConfirmarPedido.getMessage());
-              
-		RuntimeException exEnPreparacion = assertThrows(RuntimeException.class, () -> pedido1.prepararPedido(envioMock));
-        assertEquals("Acción inválida", exEnPreparacion.getMessage());
-        
-        RuntimeException exEnviarPedido = assertThrows(RuntimeException.class, () -> pedido1.enviarPedido());
-        assertEquals("Acción inválida", exEnviarPedido.getMessage());
-                        
-        RuntimeException exEntregarPedido = assertThrows(RuntimeException.class, () -> pedido1.entregarPedido()); // ya estoy en este estado
-        assertEquals("Acción inválida", exEntregarPedido.getMessage());
-        
-        RuntimeException exCancelar = assertThrows(RuntimeException.class, () -> pedido1.cancelarPedido());
-        assertEquals("Acción inválida", exCancelar.getMessage());
-        
-        
-        
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoCancelado.enPreparacion(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoCancelado.enviar(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoCancelado.entregado(pedidoMock));
+
+		assertThrows(TransicionDeEstadoInvalidaException.class,
+				() -> estadoCancelado.cancelar(pedidoMock));
+
+		verifyNoInteractions(pedidoMock);
 	}
 
-	@Test
-	public void testTransicionesValidasDeEstadoBorrador() {
-		pedido1.confirmarPedido();
-		assertInstanceOf(EstadoConfirmado.class, pedido1.getEstado());
-		
-		pedido1.setEstado(new EstadoBorrador());
-		pedido1.cancelarPedido();
-		assertInstanceOf(EstadoCancelado.class, pedido1.getEstado());
-	}
-	
-	@Test
-	public void testTransicionesValidasDeEstadoConfirmado() {
-		
-		MetodoDeEnvio envioMock = mock(MetodoDeEnvio.class);
-
-		pedido1.setEstado(new EstadoConfirmado());
-		pedido1.prepararPedido(envioMock);
-		assertInstanceOf(EstadoEnPreparacion.class, pedido1.getEstado());
-		
-		pedido1.setEstado(new EstadoConfirmado());
-		pedido1.cancelarPedido();
-		assertInstanceOf(EstadoCancelado.class, pedido1.getEstado());
-	}
-	
-	@Test
-	public void testTransicionesValidasDeEstadoEnPreparacion() {
-		pedido1.setEstado(new EstadoEnPreparacion());
-		pedido1.enviarPedido();
-		assertInstanceOf(EstadoEnviado.class, pedido1.getEstado());
-		
-		pedido1.setEstado(new EstadoEnPreparacion());
-		pedido1.cancelarPedido();
-		assertInstanceOf(EstadoCancelado.class, pedido1.getEstado());
-	}
-	
-	@Test
-	public void testTransicionesValidasDeEstadoEnviado() {
-		pedido1.setEstado(new EstadoEnviado());
-		pedido1.entregarPedido();
-		assertInstanceOf(EstadoEntregado.class, pedido1.getEstado());
-		
-		pedido1.setEstado(new EstadoEnviado());
-		pedido1.cancelarPedido();
-		assertInstanceOf(EstadoCancelado.class, pedido1.getEstado());
-	}
-	
-	//Cancelado y Entregado son terminales, no tienen transiciones válidas
 }
