@@ -85,6 +85,9 @@ public class ECommerce{
 	public List<Factura> getFacturas() {
 		return generadorDeFacturas.getFacturas(); 
 	}
+	public Factura getFactura(Pedido pedido) {
+		return generadorDeFacturas.getFactura(pedido); 
+	}
 	
 	public List<ResumenVentaItem> cantidadDeVentasYPreciosPromedioPorItem(){
 		//Guardo en una lista todos los DetalleFacturableItem de todas mis facturas generadas. El flaten es para pasar de una "lista de listas" a una "lista"

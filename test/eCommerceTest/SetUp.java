@@ -8,26 +8,28 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import eCommerce.*;
 import eCommerce.item.*;
 import eCommerce.libreriasExternas.*;
+import eCommerce.metodoDePago.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class SetUp {
+public class SetUp {
 	
-	@Mock protected  ApiBilleteraVirtual apiBVMock;
+	@Mock protected ApiBilleteraVirtual apiBVMock;
 	@Mock protected ApiTarjetaDeCredito apiTCMock;
 	@Mock protected ApiTransferenciaBancaria apiTransferenciaMock ;
 	@Mock protected MailSender apiMailSenderMock;
 	@Mock protected MessageSender apiMsgSenderMock;
 	
-	@Mock protected CorreoArgentina correoMock;
+	@Mock protected CorreoArgentina correoArgentinaMock;
 	@Mock protected EnvioExpress envioExpressMock;
 	@Mock protected Sucursal sucursalMock;
 	
 	
 	protected ECommerce mercadoLibre;
-	protected Pedido pedido1; 
-	protected Pedido pedidoVacio; 
-	protected Pedido pedidoConPaquete;
+	protected Pedido pedidoAmi; 
+	protected Pedido pedidoVacioRena; 
+	protected Pedido pedidoConPaqueteAzu;
+	protected Pedido pedidoRena;
 	
 	protected DatosCliente ami = new DatosCliente("ami@gmail.com", 123213223);
 	protected DatosCliente azu = new DatosCliente("azu@gmail.com", 123254543);
@@ -53,16 +55,24 @@ class SetUp {
 	protected Paquete paqueteHomeOffice;
 	
 	
+	protected PagoConBilleteraVirtual pagoBVAzu ;
+	protected PagoConTarjeta pagoTJAmi;
+	protected PagoConTransferencia pagoTransRena;
+	
 	
 	@BeforeEach
 	public void setUp() { 
-		MailSender apiMailSenderMock = mock(MailSender.class);
-		MessageSender apiMsgSenderMock = mock(MessageSender.class);
+		this.apiMailSenderMock = mock(MailSender.class);
+		this.apiMsgSenderMock = mock(MessageSender.class);
+		this.correoArgentinaMock = mock(CorreoArgentina.class);
+		this.envioExpressMock = mock(EnvioExpress.class);
+		
 		this.mercadoLibre = new ECommerce(apiMailSenderMock, apiMsgSenderMock);
 		setUpItems();
 		armadoDePaquetes();
 		armadoDeECommerce();
 		armadoDePedidos();
+		metodosDePago();
 		
 	}
 	public void setUpItems() {
@@ -111,15 +121,22 @@ class SetUp {
 		this.mercadoLibre.agregarItem(paqueteHomeOffice);
 	}
 	
+	public void metodosDePago() {
+		this.pagoBVAzu = new PagoConBilleteraVirtual(this.apiBVMock);
+		this.pagoTJAmi = new PagoConTarjeta(12345678, 123 , "1/3/2027", this.apiTCMock);
+		this.pagoTransRena = new PagoConTransferencia("1234567", "", this.apiTransferenciaMock);
+	}
 	public void armadoDePedidos() {
-		this.pedido1 = this.mercadoLibre.newPedido(ami);
-		this.pedido1.addItem(mouse, 1);
-		this.pedido1.addItem(teclado, 2);    
+		this.pedidoAmi = this.mercadoLibre.newPedido(ami);
+		this.pedidoAmi.addItem(mouse, 1);
+		this.pedidoAmi.addItem(teclado, 2);    
         
-		this.pedidoVacio = this.mercadoLibre.newPedido(rena);
-		this.pedidoConPaquete = this.mercadoLibre.newPedido(azu);
+		this.pedidoVacioRena = this.mercadoLibre.newPedido(rena);
 		
-		this.pedidoConPaquete.addItem(packAudioMovil, 1);
+		this.pedidoConPaqueteAzu = this.mercadoLibre.newPedido(azu);
+		this.pedidoConPaqueteAzu.addItem(packAudioMovil, 1);
 		
+		this.pedidoRena = this.mercadoLibre.newPedido(rena);
+		this.pedidoRena.addItem(mate, 1);
 	}
 }

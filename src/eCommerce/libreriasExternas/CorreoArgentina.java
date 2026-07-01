@@ -2,9 +2,7 @@ package eCommerce.libreriasExternas;
 
 import eCommerce.envios.Direccion;
 
-public class CorreoArgentina {
+public interface CorreoArgentina {
 	
-	public static float estimarEnvio(float peso, Direccion envio) {
-		return 0f;
-	}
+	public float estimarEnvio(float peso, Direccion envio);
 }

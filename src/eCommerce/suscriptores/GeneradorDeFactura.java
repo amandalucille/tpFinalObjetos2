@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import eCommerce.Pedido;
-import eCommerce.comprobantes.Factura; 
+import eCommerce.comprobantes.Factura;
+import eCommerce.errores.NoTieneFacturaException; 
 
 public class GeneradorDeFactura implements PedidoObserver {
 	private Map<Pedido, Factura> facturas;
@@ -22,7 +23,10 @@ public class GeneradorDeFactura implements PedidoObserver {
 	}
 	
 	public Factura getFactura(Pedido pedido) {
-		return this.facturas.get(pedido);
+		if (this.facturas.get(pedido) == null) {
+			throw new NoTieneFacturaException();
+		}
+		return this.facturas.get(pedido); 
 	}
 	
 	public List<Factura> getFacturas(){

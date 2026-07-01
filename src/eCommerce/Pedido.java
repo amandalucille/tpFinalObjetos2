@@ -62,7 +62,7 @@ public class Pedido {
 		metodoDePago.procesarPago(this);
 
 	}
-	
+
 	public void confirmarPedido() {
 		this.validarStockItems(); //Antes de cambiar de estado, tiene que validarse que haya stock de los items seleccionados. 
 		this.estado.confirmar(this);	 
@@ -181,8 +181,6 @@ public class Pedido {
 	public Boolean esVentaExitosa() {
 		return this.notaDeCredito == null;
 	}
-	public Integer cantidadVendidaDe(ItemCatalogo item) {
-		return this.items.getOrDefault(item, 0);
-	}
+	
 	
 }

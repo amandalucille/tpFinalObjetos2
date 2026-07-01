@@ -5,11 +5,17 @@ import eCommerce.libreriasExternas.*;
 
 public class EnvioExpressAdapter implements MetodoDeEnvio{
 	
+	private EnvioExpress apiEnvio;
+	
+	public EnvioExpressAdapter(EnvioExpress apiEnvio) {
+		this.apiEnvio = apiEnvio;
+
+	}
 	@Override
 	public float calcularCostoDeEnvio(Pedido pedido) {
 		float precio = pedido.montoTotalItems().floatValue();
 		
-		return EnvioExpress.calcularCosto(precio);
+		return apiEnvio.calcularCosto(precio);
 	}
 	
 	@Override

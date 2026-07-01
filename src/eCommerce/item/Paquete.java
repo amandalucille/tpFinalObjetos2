@@ -75,7 +75,7 @@ public class Paquete implements ItemCatalogo{
 	
 	
 	public void removeItem(ItemCatalogo item) {
-		this.items.remove(item);
+		this.items.remove(item); //Agregar que le devuelva el stock al item. (Cantidad * stock del paquete)s
 	}
 	
 	@Override
@@ -88,6 +88,8 @@ public class Paquete implements ItemCatalogo{
 	
 	@Override
 	public void aumentarStock(Integer cantidad) {
+		this.items.forEach((item,cant) -> item.decrementarStock(cantidad*cant));
+		
 		this.stock += cantidad;
 	}
 	
