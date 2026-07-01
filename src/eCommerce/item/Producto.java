@@ -43,14 +43,17 @@ public class Producto implements ItemCatalogo{
 		this(sku, nombre, descripcion, marca, categoria, precio, 0.0, stock,peso);
 	}
 	
+	@Override
 	public String getCategoria() {
 		return this.categoria;
 	}
 	
+	@Override
 	public Double getPrecioFinal() {
 		return this.getPrecioBase() * (1 - this.descuento / 100); 
 	}
 	
+	@Override
 	public void validarItem() {
 	    if (this.nombre == null || this.nombre.isBlank()) {
 	        throw new ItemInvalidoException("Producto Desconocido", "El nombre del producto es obligatorio y no puede estar vacío.");
@@ -105,22 +108,27 @@ public class Producto implements ItemCatalogo{
 							     .getValor();	
 	}
 	
+	@Override
 	public String getNombre() {
 		return this.nombre;
 	}
 	
+	@Override
 	public String getDescripcion() {
 		return descripcion;
 	}
 
+	@Override
 	public Double getPrecioBase() {
 		return precio;
 	}
 	
+	@Override
 	public Boolean hayStock(Integer cantidad) {
 		return this.stock >= cantidad;
 	}
 	
+	@Override
 	public void decrementarStock(Integer cantidad) {
 		
 		if (!hayStock(cantidad)) {
@@ -129,18 +137,22 @@ public class Producto implements ItemCatalogo{
 		this.stock -= cantidad;
 	}
 	
+	@Override
 	public void aumentarStock(Integer cantidad) {
 		this.stock += cantidad;
 	}
 
+	@Override
 	public Double getPeso() {
 		return peso;
 	}
 
+	@Override
 	public Integer stockDisponible() {
 		return this.stock ;
 	}
 	
+	@Override
 	public void aceptar(ReporteVisitor reporteVisitor) {
 		reporteVisitor.visitar(this);
 		

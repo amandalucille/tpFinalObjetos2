@@ -5,10 +5,13 @@ import eCommerce.libreriasExternas.CorreoArgentina;
 
 public class EnvioEstandarAdapter implements MetodoDeEnvio{
 	
+	@Override
 	public float calcularCostoDeEnvio(Pedido pedido) {
 		float peso = pedido.getPeso().floatValue();
 		return CorreoArgentina.estimarEnvio(peso,pedido.getDireccion());
 	}
+	
+	@Override
 	public String estimacionDeDias() {
 		return "Tu pedido llegará entre 5 y 7 días hábiles";
 	}

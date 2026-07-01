@@ -10,10 +10,13 @@ public class RetiroEnSucursal implements MetodoDeEnvio{
 	public RetiroEnSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
+	
+	@Override
 	public float calcularCostoDeEnvio(Pedido pedido) {
 		return 0;
 	}
 
+	@Override
 	public String estimacionDeDias() {
 		
 		return "Tu pedido" + (sucursal.hayStockLocal()? "está en el local":"llegará en 3 días");

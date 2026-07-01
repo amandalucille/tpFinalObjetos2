@@ -29,18 +29,27 @@ public class Paquete implements ItemCatalogo{
 		this(nombre, descripcion, categoria, 0.0, stock);
 	}
 	
+	@Override
 	public String getNombre() {
 		return this.nombre;
 	}
 	
-	public String getDescripcion() {
-		return this.descripcion;
-	}
-
+	@Override
 	public String getCategoria() {
 		return this.categoria;
 	}
 	
+	@Override
+	public Integer stockDisponible() {
+		return this.stock;
+	}
+	
+	@Override
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+	
+	@Override
 	public Double getPrecioBase() {
 		return this.items.entrySet()
 						 .stream()
@@ -48,9 +57,16 @@ public class Paquete implements ItemCatalogo{
 						 .sum();
 	}
 
+	@Override
 	public Double getPrecioFinal() {
 		return this.getPrecioBase() * (1 - this.descuento/100);
 	}
+	
+	@Override
+	public Boolean hayStock(Integer cantidad) {
+		return this.stock >= cantidad;
+	}
+	
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
 		item.decrementarStock(cantidad);
@@ -62,10 +78,7 @@ public class Paquete implements ItemCatalogo{
 		this.items.remove(item);
 	}
 	
-	public Boolean hayStock(Integer cantidad) {
-		return this.stock >= cantidad;
-	}
-	
+	@Override
 	public void decrementarStock(Integer cantidad) {
 		
 		if (!hayStock(cantidad)) {
@@ -74,16 +87,20 @@ public class Paquete implements ItemCatalogo{
 		this.stock -= cantidad;
 	}
 	
+	@Override
 	public void aumentarStock(Integer cantidad) {
 		this.stock += cantidad;
 	}
 	
+	@Override
 	public Double getPeso() {
 		return items.entrySet()
 					.stream()
 					.mapToDouble(itemCant -> itemCant.getKey().getPeso() * itemCant.getValue())
 					.sum();
 	}
+	
+	@Override
 	public void validarItem() {
 	    if (this.nombre == null || this.nombre.isBlank()) {
 	        throw new ItemInvalidoException("Nombre Desconocido", "El nombre del paquete no puede estar nulo o vacío.");
@@ -99,9 +116,8 @@ public class Paquete implements ItemCatalogo{
 		
 	}
 
-	public Integer stockDisponible() {
-		return this.stock;
-	}
+
+	@Override
 	public void aceptar(ReporteVisitor reporteVisitor) {
 		reporteVisitor.visitar(this);
 		

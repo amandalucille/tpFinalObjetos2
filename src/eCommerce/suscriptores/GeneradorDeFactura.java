@@ -15,6 +15,8 @@ public class GeneradorDeFactura implements PedidoObserver {
 	public GeneradorDeFactura() {
 		this.facturas = new HashMap<>();
 	}
+	
+	@Override
 	public void notificarPedidoEntregado(Pedido pedido){
 		this.facturas.put(pedido, new Factura(pedido));
 	}

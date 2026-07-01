@@ -11,6 +11,7 @@ public class Fidelizador implements PedidoObserver {
 		this.api = api;
 	}
 
+	@Override
 	public void notificarPedidoCancelado(){
 		this.api.enviarMensaje(this.nroTelefono, "¡¡Volve y te regalamos el cupon 1234 para que obtengas un 5% de descuento aplicable en todos los productos de la tienda!!");
 	}
