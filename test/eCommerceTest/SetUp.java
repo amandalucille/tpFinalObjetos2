@@ -81,13 +81,13 @@ public class SetUp {
 		this.mate = new Producto("456", "Mate", "Mate de madera", "Urquiza", "Bazar", 1000.0, 15.0, 1, 4.5);
 		this.notebook = new Producto("999", "Notebook", "Computadora", "Dell", "Tech", 150000.0, 100, 2.0);
 		this.productoSinStock = new Producto("000", "Notebook", "Computadora", "Dell", "Tech", 150000.0, 0, 2.0);
-		this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0, 30, 2.2);
+		this.auriculares = new Producto("999", "Auriculares Bluetooth", "auriculares inalambricos", "JBL", "Audio", 8000.0, 300, 2.2);
 		this.funda = new Producto("111", "Funda protectora", "Funda de silicona", "shein", "Accesorio", 1500.0, 30, 5.4);
-		this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 20, 5.4);
-		this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 10, 4.4);
-		this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 4, 6.6);
+		this.cable = new Producto("222", "Cable USC-C", "cable de carga para celulares multiples marcas", "sony", "electronica", 800.0, 200, 5.4);
+		this.teclado = new Producto("333", "Teclado", "Teclado inalambrico", "genius", "perifericos", 2000.0, 100, 4.4);
+		this.mouse = new Producto("444", "Mouse", "Mouse inalambrico", "sony", "electronica", 800.0, 40, 6.6);
     	
-		this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", "Audio", 15.0, 3);
+		this.packAudioMovil = new Paquete("Pack Audio Móvil", "Paquete de accesorios", "Audio", 15.0, 7);
 		this.paqueteSinStock = new Paquete("paquete", "paquete", "Varios", 0);
 		this.paqueteHomeOffice = new Paquete("Kit Home Office", "Paquete de audio + mouse + teclado", "Oficina", 3);
 		
@@ -140,4 +140,5 @@ public class SetUp {
 		this.pedidoRena = this.mercadoLibre.newPedido(rena);
 		this.pedidoRena.addItem(mate, 1);
 	}
+	
 }
