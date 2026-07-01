@@ -132,7 +132,7 @@ public class Producto implements ItemCatalogo{
 	public void decrementarStock(Integer cantidad) {
 		
 		if (!hayStock(cantidad)) {
-		    throw new StockInsuficienteException(getNombre(), cantidad);
+		    throw new StockInsuficienteException(getNombre(), this.stock);
 		}
 		this.stock -= cantidad;
 	}

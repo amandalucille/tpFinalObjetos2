@@ -80,11 +80,10 @@ public class Paquete implements ItemCatalogo{
 	
 	@Override
 	public void decrementarStock(Integer cantidad) {
-		
-		if (!hayStock(cantidad)) {
-		    throw new RuntimeException("Sin stock");
-		}
-		this.stock -= cantidad;
+	    if (!hayStock(cantidad)) {
+	        throw new StockInsuficienteException(getNombre(), this.stock);
+	    }
+	    this.stock -= cantidad;
 	}
 	
 	@Override
@@ -109,7 +108,9 @@ public class Paquete implements ItemCatalogo{
 	    if (this.descripcion == null || this.descripcion.isBlank()) {
 	        throw new ItemInvalidoException(this.nombre, "La descripción del paquete es obligatoria.");
 	    }
-	    
+	    if (this.categoria == null || this.categoria.isBlank()) {
+	        throw new ItemInvalidoException(this.nombre, "La categoría del paquete es obligatoria.");
+	    }
 	    if (this.stock == null || this.stock < 0) {
 	        throw new ItemInvalidoException(this.nombre, "El stock no puede ser nulo ni tener un valor negativo.");
 	    }

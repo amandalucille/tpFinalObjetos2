@@ -1,180 +1,172 @@
 package eCommerceTest;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
-
-
 import org.junit.jupiter.api.Test;
-
 import eCommerce.item.*;
+import eCommerce.errores.ItemInvalidoException;
+import eCommerce.errores.StockInsuficienteException;
 
-
-public class ItemTest  extends setUp{
+public class ItemTest extends setUp {
 	
-
     @Test
     public void testPrecioFinalSinDescuento() {
         assertEquals(1000.0, termo.getPrecioFinal());
     }
-
+    public void testNombresYDescripcion() {
+        assertEquals("Notebook", notebook.getNombre());
+        assertEquals("Computadora", notebook.getDescripcion());  
+    	
+        assertEquals("Pack Audio Móvil", packAudioMovil.getNombre());
+        assertEquals("Paquete de accesorios", packAudioMovil.getDescripcion());  
+    }
+    @Test
+    public void testDePaqueteDeProductos() {
+      
+        assertEquals(38100.0, packAudioMovil.getPrecioBase(), 0.01);
+        assertEquals(32385.0, packAudioMovil.getPrecioFinal(), 0.01);
+    	
+        packAudioMovil.removeItem(auriculares);
+        assertEquals(6100.0, packAudioMovil.getPrecioBase(), 0.01);
+    	
+        packAudioMovil.addItem(auriculares, 4);
+    		
+        assertEquals(37185.0, paqueteHomeOffice.getPrecioBase(), 0.01);
+        assertEquals(37185.0, paqueteHomeOffice.getPrecioFinal(), 0.01);
+    }
     @Test
     public void testPrecioFinalConDescuento() {
-        assertEquals(850.0, mate.getPrecioFinal());
+        assertEquals(850.0, mate.getPrecioFinal()); // Base 1000 con 15% de descuento
     }
 
     @Test
     public void testDeValidezDeProducto() {
-     	
-        RuntimeException exSinSKU = assertThrows(RuntimeException.class, () -> new Producto(null, "Remera", "Remera de algodón", "Nike", "Ropa", 500.0, 2,9.0));
-        assertEquals("No es un producto válido", exSinSKU.getMessage());
+        ItemInvalidoException exSinSKU = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto(null, "Remera", "Remera de algodón", "Nike", "Ropa", 500.0, 2, 9.0));
+        assertEquals("El ítem 'Remera' es inválido: El SKU no puede ser nulo o vacío.", exSinSKU.getMessage());
         
-        RuntimeException exSKUIsBlank = assertThrows(RuntimeException.class, () -> new Producto("  ", "Remera", "Remera de algodón", "Nike", "Ropa", 500.0, 2,9.0));
-        assertEquals("No es un producto válido", exSKUIsBlank.getMessage());
+        ItemInvalidoException exSKUIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("  ", "Remera", "Remera de algodón", "Nike", "Ropa", 500.0, 2, 9.0));
+        assertEquals("El ítem 'Remera' es inválido: El SKU no puede ser nulo o vacío.", exSKUIsBlank.getMessage());
         
-        RuntimeException exSinNombre = assertThrows(RuntimeException.class, () -> new Producto("1", null, "Remera de algodón", "Nike", "Ropa", 500.0, 3,10.0));
-        assertEquals("No es un producto válido", exSinNombre.getMessage());
+        ItemInvalidoException exSinNombre = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("1", null, "Remera de algodón", "Nike", "Ropa", 500.0, 3, 10.0));
+        assertEquals("El ítem 'Producto Desconocido' es inválido: El nombre del producto es obligatorio y no puede estar vacío.", exSinNombre.getMessage());
         
-        RuntimeException exNombreIsBlank = assertThrows(RuntimeException.class, () -> new Producto("1", "  ", "Remera de algodón", "Nike", "Ropa", 500.0, 3,10.0));
-        assertEquals("No es un producto válido", exNombreIsBlank.getMessage());
+        ItemInvalidoException exNombreIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("1", "  ", "Remera de algodón", "Nike", "Ropa", 500.0, 3, 10.0));
+        assertEquals("El ítem 'Producto Desconocido' es inválido: El nombre del producto es obligatorio y no puede estar vacío.", exNombreIsBlank.getMessage());
         
-        RuntimeException exSinDescripcion= assertThrows(RuntimeException.class, () -> new Producto("2", "Remera", null, "Nike", "Ropa", 500.0, 4,16.0));
-        assertEquals("No es un producto válido", exSinDescripcion.getMessage());
+        ItemInvalidoException exSinDescripcion = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("2", "Remera", null, "Nike", "Ropa", 500.0, 4, 16.0));
+        assertEquals("El ítem 'Remera' es inválido: La descripción del producto es obligatoria.", exSinDescripcion.getMessage());
         
+        ItemInvalidoException exDescripcionIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("2", "Remera", "  ", "Nike", "Ropa", 500.0, 4, 16.0));
+        assertEquals("El ítem 'Remera' es inválido: La descripción del producto es obligatoria.", exDescripcionIsBlank.getMessage());
         
-        RuntimeException exDescripcionIsBlank= assertThrows(RuntimeException.class, () -> new Producto("2", "Remera", "  ", "Nike", "Ropa", 500.0, 4,16.0));
-        assertEquals("No es un producto válido", exDescripcionIsBlank.getMessage());
+        ItemInvalidoException exSinMarca = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("3", "Remera", "Remera de algodón", null, "Ropa", 500.0, 5, 2.4));
+        assertEquals("El ítem 'Remera' es inválido: La marca del producto es obligatoria.", exSinMarca.getMessage());
         
-        RuntimeException exSinMarca= assertThrows(RuntimeException.class, () -> new Producto("3", "Remera", "Remera de algodón", null, "Ropa", 500.0, 5,2.4));
-        assertEquals("No es un producto válido", exSinMarca.getMessage());
+        ItemInvalidoException exMarcaIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("3", "Remera", "Remera de algodón", "  ", "Ropa", 500.0, 5, 2.4));
+        assertEquals("El ítem 'Remera' es inválido: La marca del producto es obligatoria.", exMarcaIsBlank.getMessage());
         
-        RuntimeException exMarcaIsBlank= assertThrows(RuntimeException.class, () -> new Producto("3", "Remera", "Remera de algodón", "  ", "Ropa", 500.0, 5,2.4));
-        assertEquals("No es un producto válido", exMarcaIsBlank.getMessage());
+        ItemInvalidoException exSinCategoria = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("4", "Remera", "Remera de algodón", "Nike", null, 500.0, 6, 12.4));
+        assertEquals("El ítem 'Remera' es inválido: La categoría del producto es obligatoria.", exSinCategoria.getMessage());
         
-        RuntimeException exSinCategoria= assertThrows(RuntimeException.class, () -> new Producto("4", "Remera", "Remera de algodón", "Nike", null, 500.0, 6,12.4));
-        assertEquals("No es un producto válido", exSinCategoria.getMessage());
+        ItemInvalidoException exCategoriaIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("4", "Remera", "Remera de algodón", "Nike", "  ", 500.0, 6, 12.4));
+        assertEquals("El ítem 'Remera' es inválido: La categoría del producto es obligatoria.", exCategoriaIsBlank.getMessage());
         
-        RuntimeException exCategoriaIsBlank = assertThrows(RuntimeException.class, () -> new Producto("4", "Remera", "Remera de algodón", "Nike", "  ", 500.0, 6, 12.4));
-        assertEquals("No es un producto válido", exCategoriaIsBlank.getMessage());
+        ItemInvalidoException exPrecioNegativo = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", -10.0, 7, 5.76));
+        assertEquals("El ítem 'Remera' es inválido: El precio debe ser un valor mayor a 0.", exPrecioNegativo.getMessage());
         
-        RuntimeException exPrecioNegativo = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", -10.0, 7,5.76));
-        assertEquals("No es un producto válido", exPrecioNegativo.getMessage());
+        ItemInvalidoException exPrecioNull = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", null, 7, 5.76));
+        assertEquals("El ítem 'Remera' es inválido: El precio debe ser un valor mayor a 0.", exPrecioNull.getMessage());
         
-        RuntimeException exPrecioNull = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", null, 7,5.76));
-        assertEquals("No es un producto válido", exPrecioNull.getMessage());
+        ItemInvalidoException exStockNegativo = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, -3, 10.5));
+        assertEquals("El ítem 'Remera' es inválido: El stock no puede ser nulo ni tener un valor negativo.", exStockNegativo.getMessage());
         
-        RuntimeException exStockNegativo = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, -3,10.5));
-        assertEquals("No es un producto válido", exStockNegativo.getMessage());
+        ItemInvalidoException exStockNull = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, null, 10.5));
+        assertEquals("El ítem 'Remera' es inválido: El stock no puede ser nulo ni tener un valor negativo.", exStockNull.getMessage());
         
-        RuntimeException exStockNull = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, null,10.5));
-        assertEquals("No es un producto válido", exStockNull.getMessage());
+        ItemInvalidoException exPesoNegativo = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, 7, -10.5));
+        assertEquals("El ítem 'Remera' es inválido: El peso del producto debe ser un valor mayor a 0.", exPesoNegativo.getMessage());
         
-        RuntimeException exPesoNegativo = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, 7,-10.5));
-        assertEquals("No es un producto válido", exPesoNegativo.getMessage());
-        
-        RuntimeException exPesoNull = assertThrows(RuntimeException.class, () -> new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, 7,null));
-        assertEquals("No es un producto válido", exPesoNull.getMessage());
-        
+        ItemInvalidoException exPesoNull = assertThrows(ItemInvalidoException.class, () -> 
+            new Producto("5", "Remera", "Remera de algodón", "Nike", "Ropa", 10.0, 7, null));
+        assertEquals("El ítem 'Remera' es inválido: El peso del producto debe ser un valor mayor a 0.", exPesoNull.getMessage());
     }
-
-    @Test
-    public void testDePaqueteDeProductos() {
-    	
-    	assertEquals(32385.0, packAudioMovil.getPrecioFinal() );
-    	
-    	
-    	packAudioMovil.removeItem(auriculares);
-    	assertEquals(2300.0, packAudioMovil.getPrecioBase() );
-    	
-    	packAudioMovil.addItem(auriculares,1);
-    		
-        
-        assertEquals(11555.0, paqueteHomeOffice.getPrecioBase() );
-        assertEquals(11555.0, paqueteHomeOffice.getPrecioFinal() );
-    
-        
-    }
-    
-    @Test
-    public void testNombresYDescripcion() {
-    	assertEquals("Notebook", notebook.getNombre());
-    	assertEquals("Computadora", notebook.getDescripcion());  
-    	
-    	assertEquals("Pack Audio Móvil", packAudioMovil.getNombre());
-    	assertEquals("Paquete de accesorios", packAudioMovil.getDescripcion());  
-	
-    }
-    
     @Test
     public void testValidezDePaquete() {
-
-        RuntimeException exSinNombre = assertThrows(RuntimeException.class, () -> new Paquete(null,"Paquete pruebas", 9));
-        assertEquals("No es un Paquete válido", exSinNombre.getMessage());
+        ItemInvalidoException exSinNombre = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete(null, "Paquete pruebas", "Categoría", 9)
+        );
+        assertEquals("El ítem 'Nombre Desconocido' es inválido: El nombre del paquete no puede estar nulo o vacío.", exSinNombre.getMessage());
         
-        RuntimeException exNombreIsBlank = assertThrows(RuntimeException.class, () -> new Paquete("","Paquete pruebas", 9));
-        assertEquals("No es un Paquete válido", exNombreIsBlank.getMessage());
+        ItemInvalidoException exNombreIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("  ", "Paquete pruebas", "Categoría", 9)
+        );
+        assertEquals("El ítem 'Nombre Desconocido' es inválido: El nombre del paquete no puede estar nulo o vacío.", exNombreIsBlank.getMessage());
         
-        RuntimeException exSinDescripcion = assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas", null, 9));
-        assertEquals("No es un Paquete válido", exSinDescripcion.getMessage());
+        ItemInvalidoException exSinDescripcion = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("Combo", null, "Categoría", 9)
+        );
+        assertEquals("El ítem 'Combo' es inválido: La descripción del paquete es obligatoria.", exSinDescripcion.getMessage());
         
-        RuntimeException exDescripcionIsBlank = assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas","", 9));
-        assertEquals("No es un Paquete válido", exDescripcionIsBlank.getMessage());
+        ItemInvalidoException exDescripcionIsBlank = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("Combo", "   ", "Categoría", 9)
+        );
+        assertEquals("El ítem 'Combo' es inválido: La descripción del paquete es obligatoria.", exDescripcionIsBlank.getMessage());
         
-        RuntimeException exSinStock= assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas", "Paquete prueba", null));
-        assertEquals("No es un Paquete válido", exSinStock.getMessage());
+        ItemInvalidoException exSinCategoria = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("Combo", "Descripción", null, 9)
+        );
+        assertEquals("El ítem 'Combo' es inválido: La categoría del paquete es obligatoria.", exSinCategoria.getMessage());
         
-        RuntimeException exStockNegativo = assertThrows(RuntimeException.class, () -> new Paquete("Paquete pruebas", "Paquete prueba", -5));
-        assertEquals("No es un Paquete válido", exStockNegativo.getMessage());
+        ItemInvalidoException exCategoriaVacia = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("Combo", "Descripción", "   ", 9)
+        );
+        assertEquals("El ítem 'Combo' es inválido: La categoría del paquete es obligatoria.", exCategoriaVacia.getMessage());
         
+        ItemInvalidoException exSinStock = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("Combo", "Descripción", "Categoría", null)
+        );
+        assertEquals("El ítem 'Combo' es inválido: El stock no puede ser nulo ni tener un valor negativo.", exSinStock.getMessage());
+        
+        ItemInvalidoException exStockNegativo = assertThrows(ItemInvalidoException.class, () -> 
+            new Paquete("Combo", "Descripción", "Categoría", -5)
+        );
+        assertEquals("El ítem 'Combo' es inválido: El stock no puede ser nulo ni tener un valor negativo.", exStockNegativo.getMessage());
     }
-
     @Test
     public void testDecrementarStockInvalido() {
-    	RuntimeException exSinStockProducto = assertThrows(RuntimeException.class, () -> productoSinStock.decrementarStock(4));
-        assertEquals("Sin stock", exSinStockProducto.getMessage());
-        
-        RuntimeException exSinStockPaquete = assertThrows(RuntimeException.class, () -> paqueteSinStock.decrementarStock(3));
-        assertEquals("Sin stock", exSinStockPaquete.getMessage());
-        
-    
+        StockInsuficienteException exSinStockProducto = assertThrows(StockInsuficienteException.class, () -> 
+            productoSinStock.decrementarStock(4));
+        assertEquals("No hay stock suficiente de Notebook, quedan 0", exSinStockProducto.getMessage());
+
+        StockInsuficienteException exSinStockPaquete = assertThrows(StockInsuficienteException.class, () -> 
+        paqueteSinStock.decrementarStock(3));
+        assertEquals("No hay stock suficiente de paquete, quedan 0", exSinStockPaquete.getMessage());
     }
 
-    @Test
-    public void testGetPeso() {
-    	assertEquals(3.0,termo.getPeso());
-    	assertEquals(35.8, packAudioMovil.getPeso(),0.001);
-    	
-    }
-    
     @Test
     public void testAumentarStock() {
-    	termo.aumentarStock(3);
-    	packAudioMovil.aumentarStock(2);
+        int stockInicial = termo.stockDisponible();
+        termo.aumentarStock(3);
+        assertEquals(stockInicial + 3, termo.stockDisponible());
+        
+        int stockInicialPaquete = packAudioMovil.stockDisponible();
+        packAudioMovil.aumentarStock(2);
+        assertEquals(stockInicialPaquete + 2, packAudioMovil.stockDisponible());
     }
     
-    @Test
-    public void testAtributosDinamicosRepetidos() {
-    	//invento dos atributos dinamicos iguales
-    	Atributo<Boolean> tecladoEsp = new Atributo<Boolean>("Teclado Español", true);
-    	Atributo<Boolean> tecladoEsp2 = new Atributo<Boolean>("Teclado Español", true);
-    		
-    	//veo que efectivamente ninguno de los dos esta como atributo de la notebook
-    	assertFalse(notebook.getAtributos().contains(tecladoEsp)); 
-    	assertFalse(notebook.getAtributos().contains(tecladoEsp2));
-
-    	//agrego uno de los dos y veo que ahora me va a decir como si los 2 estuvieran xq el equals que nosotras hicimos, compara no soo por instancia, sino que tambien por nombre
-    	
-    	
-    	notebook.agregarAtributo(tecladoEsp);
-    	assertTrue(notebook.getAtributos().contains(tecladoEsp));
-    	assertTrue(notebook.getAtributos().contains(tecladoEsp2));
-
-    	
-    	//Por mas que hayan dos instancias gemelas de un atributo, por como redefinimos el equals,
-    	//al ser identicas, si tengo una, tengo la otra también. 
-    	
-    	
-        
-    	
-    }
     
 }
