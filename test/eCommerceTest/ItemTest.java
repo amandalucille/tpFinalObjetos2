@@ -6,7 +6,7 @@ import eCommerce.item.*;
 import eCommerce.errores.ItemInvalidoException;
 import eCommerce.errores.StockInsuficienteException;
 
-public class ItemTest extends setUp {
+public class ItemTest extends SetUp {
 	
     @Test
     public void testPrecioFinalSinDescuento() {

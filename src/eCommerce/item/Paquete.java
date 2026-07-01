@@ -69,7 +69,7 @@ public class Paquete implements ItemCatalogo{
 	
 	
 	public void addItem(ItemCatalogo item, Integer cantidad) {
-		item.decrementarStock(cantidad);
+		item.decrementarStock(cantidad * stockDisponible());
 		this.items.put(item, cantidad);
 	}
 	

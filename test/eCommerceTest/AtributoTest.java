@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import eCommerce.item.*;
 import eCommerce.errores.AtributoNoEncontradoException; // Importamos su excepción propia
 
-class AtributoTest extends setUp {
+class AtributoTest extends SetUp {
 	
     @Test
     public void testAtributosDinamicosDeDiferentesTipos() {

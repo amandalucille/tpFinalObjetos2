@@ -11,7 +11,7 @@ import eCommerce.estados.EstadoEnPreparacion;
 import eCommerce.estados.EstadoEntregado;
 import eCommerce.estados.EstadoEnviado;
 
-class PedidoTest  extends setUp{
+class PedidoTest  extends SetUp{
 
 	@Test
 	public void testRemoveItemDePedido() {

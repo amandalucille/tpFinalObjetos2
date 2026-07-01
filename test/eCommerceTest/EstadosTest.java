@@ -10,7 +10,7 @@ import eCommerce.envios.*;
 import eCommerce.estados.*;
 
 
-class EstadosTest extends setUp{
+class EstadosTest extends SetUp{
 
 	@Test
 	public void testTransicionesInvalidasDeEstadoBorrador() {
