@@ -43,6 +43,10 @@ public class Pedido {
 		this.items.put(item, this.items.getOrDefault(item, 0) + cantidad);
 	}
 	
+	public Map<ItemCatalogo, Integer> getItems(){
+		return this.items;
+	}
+	
 	public void removeItem(ItemCatalogo item) {
 		if(items.isEmpty()) {
 			throw new RuntimeException("No hay items en el pedido.");
@@ -61,7 +65,7 @@ public class Pedido {
 		setDireccionDeEnvio(direccion);
 		metodoDePago.procesarPago(this);
 		this.estado.enPreparacion(this);
-		this.eCommerce.agregarNuevaVenta(new Venta(this, preciosPorItem()));
+		
 	}
 	
 	public void confirmarPedido() {
@@ -191,6 +195,6 @@ public class Pedido {
 		Map<ItemCatalogo, Integer> map = new HashMap<>();
 		return this.items.entrySet()
 						 .stream()
-						 .collect(Collectors.toMap(map.Entry::getKey, entry -> entry.getKey().getPrecioFinal()));
+						 .collect(Collectors.toMap(itemCant -> itemCant.getKey().getPrecioFinal()));
 	}
 }

@@ -1,7 +1,9 @@
 package eCommerce.suscriptores;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import eCommerce.Pedido;
@@ -12,7 +14,6 @@ public class GeneradorDeFactura implements PedidoObserver {
 
 	public GeneradorDeFactura() {
 		this.facturas = new HashMap<>();
-		
 	}
 	public void notificarPedidoEntregado(Pedido pedido){
 		this.facturas.put(pedido, new Factura(pedido));
@@ -20,6 +21,10 @@ public class GeneradorDeFactura implements PedidoObserver {
 	
 	public Factura getFactura(Pedido pedido) {
 		return this.facturas.get(pedido);
+	}
+	
+	public List<Factura> getFacturas(){
+		return new ArrayList<>(facturas.values());
 	}
 	
 }
