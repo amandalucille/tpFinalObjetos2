@@ -13,10 +13,9 @@ import eCommerce.errores.*;
 import eCommerce.item.*;
 @ExtendWith(MockitoExtension.class)
 class ErroresTest extends SetUp {
-	 
+	
 	@Test
 	public void noSePuedeComprarUnaCantidadMayorAlStockDisponible() {
-		// mate tiene stock 1 . Intento que rena compre 50 mates - no hay stock
 		Pedido pedido = mercadoLibre.newPedido(rena);
 		pedido.addItem(mate, 50);
 		
