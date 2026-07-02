@@ -23,6 +23,39 @@ import eCommerce.envios.RetiroEnSucursal;
 @ExtendWith(MockitoExtension.class)
 public class CompraTest extends SetUp {
 	@Test
+	public void sePuedeSacarUnItemDeUnPedidoEnBorrador() {
+	    assertEquals(2, pedidoAmi.getItems().size()); // mouse + teclado
+
+	    pedidoAmi.removeItem(mouse);
+
+	    assertEquals(1, pedidoAmi.getItems().size());
+	    assertFalse(pedidoAmi.getItems().containsKey(mouse));
+	    assertTrue(pedidoAmi.getItems().containsKey(teclado));
+	}
+	
+	@Test
+	public void elCostoDeEnvioEstandarDeUnPedidoConPaqueteUsaElPesoTotalDeSusItems() {
+	    Direccion direccion = new Direccion("Calle 123");
+	    MetodoDeEnvio envioEstandar = new EnvioEstandarAdapter(correoArgentinaMock);
+
+	    when(correoArgentinaMock.estimarEnvio(35.8f, direccion)).thenReturn(150f);
+
+	    Double montoAPagar = packAudioMovil.getPrecioFinal() + 150.0; // items + envío
+
+	    when(apiBVMock.saldoSuficiente(montoAPagar)).thenReturn(true);
+	    when(apiBVMock.pagar(montoAPagar)).thenReturn("004");
+
+	    // Borrador -> Confirmado
+	    pedidoConPaqueteAzu.confirmarPedido();
+
+	    // Confirmado -> EnPreparacion (calcula el envío real, dispara Paquete.getPeso())
+	    pedidoConPaqueteAzu.prepararPedido(envioEstandar, pagoBVAzu, direccion);
+
+	    verify(correoArgentinaMock, times(3)).estimarEnvio(35.8f, direccion);
+	   
+	}
+	
+	@Test
 	public void compraExitosaConTarjetaEnvioEstandar() {
 		when(apiTCMock.validarDatos(12345678, 123, "1/3/2027")).thenReturn(true);
 		when(apiTCMock.preAutorizar(4900d, 12345678)).thenReturn(true);

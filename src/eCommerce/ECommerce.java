@@ -52,21 +52,11 @@ public class ECommerce{
 		this.itemsDelCatalogo.add(item);
 	}
 	
-	public void agregarPedido(Pedido pedido) {
-		this.pedidos.add(pedido);
-	}
 	
 	public List<NotaDeCredito> getNotasDeCredito() {
 		return pedidos.stream()
 					  .map(pedido -> pedido.getNotaDeCredito())
 					  .filter(nc -> nc != null) 
-					  .collect(Collectors.toList());
-	}
-	
-	public List<Comprobante> getComprobante() {
-		return pedidos.stream()
-					  .map(pedido -> pedido.getComprobante())
-					  .filter(c -> c != null) 
 					  .collect(Collectors.toList());
 	}
 	

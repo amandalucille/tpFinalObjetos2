@@ -107,10 +107,6 @@ public class Pedido {
 		this.estado = nuevoEstado;
 	}
 	
-	public Estado getEstado() {
-		return this.estado;
-	}
-	
 	public Double montoTotalItems() {
 		//La interfaz dada pide que el tipo sea float, pero manejamos todo con double entonces cuando lo necesitemos, podemos hacer .floatValue().
 		return this.items.entrySet()

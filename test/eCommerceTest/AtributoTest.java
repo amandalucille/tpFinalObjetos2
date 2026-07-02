@@ -31,5 +31,6 @@ class AtributoTest extends SetUp {
         Atributo<Boolean> tecladoEsp2 = new Atributo<Boolean>("Teclado Español", true);
     	
         assertEquals(tecladoEsp, tecladoEsp2); 
-    }
+        
+      }
 }

@@ -11,7 +11,7 @@ public class FiltroPorCategoria extends CriterioDeBusqueda {
 	
 	@Override
 	public Boolean cumple(ItemCatalogo item) {
-		return item.getCategoria().equalsIgnoreCase(categoria);
+		return item.getCategoria().equalsIgnoreCase(categoria); // ignora las mayusculas
 	}
 
 }
