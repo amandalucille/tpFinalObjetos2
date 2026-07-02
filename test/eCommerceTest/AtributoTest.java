@@ -21,6 +21,7 @@ class AtributoTest extends SetUp {
         assertThrows(AtributoNoEncontradoException.class, () -> notebook.obtenerAtributo("Alto"));
     }
 	
+   
     @Test
     public void testEqualsAtributo() {
         assertTrue(peso.equals(peso));

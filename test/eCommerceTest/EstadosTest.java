@@ -24,6 +24,7 @@ class EstadosTest extends SetUp {
 		Estado estadoBorrador = new EstadoBorrador();
 		Pedido pedidoMock = mock(Pedido.class);
 
+		
 		// validarSiPuedoAgregarOSacarItems() no lanza excepción
 		assertDoesNotThrow(() -> estadoBorrador.validarSiPuedoAgregarOSacarItems());
 
